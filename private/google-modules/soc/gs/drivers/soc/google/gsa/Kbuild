@@ -1,0 +1,20 @@
+## SPDX-License-Identifier: GPL-2.0-only
+
+ccflags-y += -I$(KERNEL_SRC)/../private/google-modules/trusty/include
+
+obj-$(CONFIG_GSA) += gsa.o
+gsa-$(CONFIG_GSA) += gsa_core.o gsa_log.o gsa_tz.o
+
+# If GSA_LINUX_MAILBOX is enabled in the config, build and link gsa_mbox.c
+# Otherwise, GSA_LEGACY_MAILBOX is automatically enabled, building and linking
+# gsa_mbox_legacy.c
+gsa-$(CONFIG_GSA_LINUX_MAILBOX) += gsa_mbox.o
+gsa-$(CONFIG_GSA_LEGACY_MAILBOX) += gsa_mbox_legacy.o
+
+# Debugfs support
+gsa-$(CONFIG_GSA_DEBUGFS) += gsa_debugfs.o
+
+# Build and link gsa_gsc.c if GSA_GSC enabled.
+obj-$(CONFIG_GSA_GSC) += gsa_gsc.o
+
+obj-$(CONFIG_TZ_PROT) += tzprot.o

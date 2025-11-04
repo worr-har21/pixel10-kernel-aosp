@@ -1,0 +1,6 @@
+What: /sys/devices/.../dw-dsi/hs_clock
+Date: Aug 2023
+Contact: Long Ling <longling@google.com>
+Description:
+    (RW) CDPHY high speed data rate with unit Mbps. New value will
+    take effect at the next time the DSI host powers on.

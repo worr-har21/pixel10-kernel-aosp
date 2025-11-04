@@ -1,0 +1,99 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+# For the bazel BUILD rule that builds this module, refer to the value of
+# `//private/google-modules/soc/rdo:rdo_soc_module` in the corresponding
+#   private/device/google/*/device.bazelrc
+# Generally, it is at
+#   private/device/google/**/BUILD.bazel
+
+load("//build/kernel/kleaf:kernel.bzl", "checkpatch", "ddk_headers")
+
+package(
+    default_visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules:__subpackages__",
+    ],
+)
+
+checkpatch(
+    name = "checkpatch",
+    checkpatch_pl = "//common:scripts/checkpatch.pl",
+)
+
+# Use ddk_headers to prevent build breaks in some modules for devices which
+# do not build rdo_soc_module.
+# TODO(qsliu): Solve the dependency properly after upgrading all modules to DDK.
+ddk_headers(
+    name = "rdo_undefined",
+)
+
+label_flag(
+    name = "rdo_soc_module",
+    build_setting_default = ":rdo_undefined",
+)
+
+filegroup(
+    name = "rdo_soc.kconfig",
+    srcs = glob([
+        "**/Kconfig",
+    ]) + [
+        "//private/google-modules/soc/rdo/mem-qos:google-mem-qos.kconfig",
+        "//private/google-modules/soc/rdo/pci:Kconfig",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+filegroup(
+    name = "rdo.dt-bindings",
+    srcs = glob([
+        "include/dt-bindings/**",
+    ]),
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+filegroup(
+    name = "rdo_soc_sources",
+    srcs = glob(
+        ["**"],
+        exclude = [
+            ".*",
+            ".*/**",
+            "BUILD.bazel",
+            "**/*.bzl",
+            "build.config.*",
+        ],
+    ) + [
+        "//private/google-modules/bms/misc:headers",
+    ],
+    visibility = [
+        # keep sorted
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+ddk_headers(
+    name = "rdo_soc_headers",
+    hdrs = glob([
+        "include/**/*.h",
+        "odpm/*.h",
+    ]),
+    includes = [
+        "include",
+        "odpm",
+    ],
+    visibility = [
+        # keep sorted
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules:__subpackages__",
+    ],
+)
+
+exports_files([
+    # keep sorted
+    "Makefile",
+    "vendor_boot_module.rdo",
+])

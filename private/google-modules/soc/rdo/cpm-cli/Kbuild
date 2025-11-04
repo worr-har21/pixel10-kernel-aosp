@@ -1,0 +1,2 @@
+# SPDX-License-Identifier: GPL-2.0-only
+obj-$(CONFIG_GOOGLE_CPM_CLI) += google_cpm_cli.o

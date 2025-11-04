@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+config GOOGLE_POWER_CONTROLLER
+	tristate "Google power controller driver"
+	depends on GOOGLE_MBA_CPM_INTERFACE
+	select PM_GENERIC_DOMAINS
+	help
+	  This driver allows client to power on/off Google SoC
+	  power domains via generic power domain framework.
+	  For GPU, it directly update LPCM registers. For other
+	  sswrps, it sends a MBA mailbox to CPM to request toggle
+	  the power domains.
+
+config GOOGLE_POWER_CONTROLLER_GPU_MITIGATION
+       tristate "Google power controller driver with the GPU MITIGATION feature"
+       depends on GOOGLE_POWER_CONTROLLER
+       help
+         This driver is to configures the GPU mitigation response
+         settings.

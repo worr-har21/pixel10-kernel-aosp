@@ -1,0 +1,78 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load("//build/kernel/kleaf:kernel.bzl", "checkpatch")
+load("//private/devices/google/common/kleaf:device_build.bzl", "device_build")
+load("//private/devices/google/lga:constants.bzl", "LGA_DTBS", "LGA_MODULE_OUTS")
+load(":constants.bzl", "MUZEL_DTBOS")
+
+checkpatch(
+    name = "checkpatch",
+    checkpatch_pl = "//common:scripts/checkpatch.pl",
+)
+
+device_build(
+    name = "muzel",
+    base_device = "//private/devices/google/lga:lga_base",
+    build_dtb = True,
+    build_dtbo = True,
+    build_system_dlkm = True,
+    build_vendor_dlkm = True,
+    build_vendor_kernel_boot = True,
+    defconfig_fragments = ["muzel_defconfig"],
+    dtb_outs = LGA_DTBS,
+    dtbo_outs = MUZEL_DTBOS,
+    dts_makefile = "dts/Makefile",
+    dts_srcs = glob(["dts/**"]) + [
+        "//private/google-modules/soc/gs:gs.dt-bindings",
+        "//private/google-modules/soc/rdo:rdo.dt-bindings",
+    ],
+    ext_modules = [
+        # keep sorted
+        "//private/google-modules/amplifiers/cs35l43",
+        "//private/google-modules/amplifiers/cs40l26",
+        "//private/google-modules/bluetooth/broadcom:bluetooth.broadcom",
+        "//private/google-modules/display/panels/caimito:panel-gs-cm4",
+        "//private/google-modules/display/panels/caimito:panel-gs-km4",
+        "//private/google-modules/display/panels/caimito:panel-gs-tk4b",
+        "//private/google-modules/display/panels/caimito:panel-gs-tk4c",
+        "//private/google-modules/display/panels/muzel:panel-gs-bmea",
+        "//private/google-modules/display/panels/muzel:panel-gs-flea",
+        "//private/google-modules/display/panels/muzel:panel-gs-fleb",
+        "//private/google-modules/display/panels/tegu:panel-gs-tg4c",
+        "//private/google-modules/fingerprint/qcom/qfs4008:qbt_handler",
+        "//private/google-modules/misc/h2omg",
+        "//private/google-modules/nfc",
+        "//private/google-modules/radio/samsung/s5400:cpif",
+        "//private/google-modules/touch/focaltech/ft3683u",
+        "//private/google-modules/touch/synaptics/syna_gtd:syna_touch",
+        "//private/google-modules/uwb/slsi/u100:uwb.u100",
+        "//private/google-modules/wlan/bcmdhd/bcm4383:bcmdhd4383",
+        "//private/google-modules/wlan/bcmdhd/bcm4390:bcmdhd4390",
+    ],
+    insmod_cfgs = glob(["insmod_cfg/*.cfg"]),
+    kconfig_exts = ["Kconfig.ext.muzel"],
+    kconfigs = [
+        # keep sorted
+        "//private/google-modules/fingerprint/qcom/qfs4008:qbt_handler.kconfig",
+        "//private/google-modules/misc/h2omg:h2omg.kconfig",
+        "//private/google-modules/radio/samsung/s5400:cpif.kconfig",
+    ],
+    module_outs = LGA_MODULE_OUTS,
+    vendor_ramdisk_modules_lists = ["vendor_ramdisk.modules.muzel"],
+)
+
+# For compatibility
+alias(
+    name = "lga_muzel_dist",
+    actual = ":muzel/dist",
+)
+
+alias(
+    name = "kernel",
+    actual = ":muzel/kernel",
+)
+
+alias(
+    name = "kernel_compile_commands",
+    actual = ":muzel/kernel_compile_commands",
+)

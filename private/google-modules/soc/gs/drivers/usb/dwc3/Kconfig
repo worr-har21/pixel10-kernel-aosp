@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: GPL-2.0
+
+if USB_DWC3
+
+config USB_DWC3_EXYNOS_GS
+	tristate "GS Platform"
+	depends on (USB_DWC3 || COMPILE_TEST) && OF
+	help
+	  'USB_DWC3_EXYNOS_GS' is glue layer which can be used with
+	  Synopsys DWC3 controller on GS SoCs. Say 'Y' or 'M'
+	  if you have one such devices.
+
+endif
+
+config GOOGLE_USB_ROLE_SW
+	tristate "USB data role switch for Google devices"
+	depends on EXTCON
+	select GOOGLE_VOTABLE
+	help
+	  'GOOGLE_USB_ROLE_SW' is a virtual device for collecting any
+	  Google specific USB data role switch limitations. The virtual
+	  device will aggregate usb data role switch requests from
+	  different drivers and elect a vaild one, then pass it to down-
+	  stream device. Say 'Y' or 'M' if you need this device.

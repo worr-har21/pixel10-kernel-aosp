@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: MIT
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_module", "kernel_module_group")
+
+ddk_module(
+    name = "gs-drm-connector",
+    srcs = [
+        "gs_drm_connector.c",
+        "gs_drm_trace.c",
+        "gs_reg_dump.c",
+    ],
+    out = "gs-drm-connector.ko",
+    copts = [
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/display:__subpackages__",
+        "//private/google-modules/touch:__subpackages__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/display/common:ddk_headers",
+    ],
+)
+
+kernel_module_group(
+    name = "gs_drm",
+    srcs = [
+        ":gs-drm-connector",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/display:__subpackages__",
+    ],
+)

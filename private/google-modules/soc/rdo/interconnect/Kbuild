@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+ccflags-y += -I$(srctree)/$(src)
+
+obj-$(CONFIG_GOOGLE_IRM) += google_icc.o
+
+google_icc-y += \
+	google_icc_helper.o \
+	google_icc_provider.o \
+	rdo.o
+
+obj-$(CONFIG_GOOGLE_IRM) += google_irm.o
+
+google_irm-y += \
+	google_irm_core.o \
+	google_irm_debugfs.o \
+	google_irm_of.o
+
+obj-$(CONFIG_GOOGLE_IRM) += google-irm-stub.o
+
+google-irm-stub-y += \
+	google_irm_stub.o
+
+obj-$(CONFIG_GOOGLE_ICC_HELPER_MOCK_CLIENT) += google-icc-helper-mock-client.o
+
+google-icc-helper-mock-client-y += \
+	google_icc_helper_mock_client.o

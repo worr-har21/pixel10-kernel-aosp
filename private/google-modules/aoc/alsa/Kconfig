@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# AoC ALSA configuration
+#
+
+config AOC_ALSA_USB
+	bool "AoC ALSA USB audio support"
+	depends on AOC_DRIVER
+	help
+		Say yes here to support USB audio
+
+config AOC_ALSA_DP_AUDIO
+	bool "AoC ALSA DP audio support"
+	depends on AOC_DRIVER
+	default y if DRM_SAMSUNG_DP_AUDIO
+	default y if DWC_DPTX_AUDIO
+	help
+		Say yes here to support DP Audio
+
+config AOC_ALSA_INCALL_CAP_3
+	bool "AoC ALSA incall capture stream 3"
+	depends on AOC_DRIVER
+	default n
+	help
+		Say yes here to support incall capture stream 3

@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_module")
+
+ddk_module(
+    name = "exynos_dit",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "dit.c",
+        "dit_2_1_0.c",
+        "dit_hal.c",
+        "dit_net.c",
+    ],
+    out = "exynos_dit.ko",
+    copts = [
+        "-Wformat",
+        "-Wformat-zero-length",
+        "-Wno-missing-prototypes",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/google-modules/radio/samsung/s5400:__pkg__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/bms/misc:headers",
+    ],
+)

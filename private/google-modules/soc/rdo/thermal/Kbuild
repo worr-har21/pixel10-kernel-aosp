@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+ccflags-y += -I$(srctree)/drivers/thermal
+
+obj-$(CONFIG_GOOGLE_THERMAL) += cpm_thermal.o
+obj-$(CONFIG_GOOGLE_THERMAL) += google-thermal.o
+
+google-thermal-y += \
+	google_thermal.o \
+	google_thermal_cooling.o \
+	google_thermal_debugfs.o

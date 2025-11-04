@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: GPL-2.0-only
+ccflags-y += -I$(KERNEL_SRC)/../private/google-modules/perf/include
+obj-$(CONFIG_GOOGLE_DEVFREQ) += google_devfreq.o
+
+obj-$(CONFIG_GOOGLE_CCF_DEVFREQ) += google_ccf_devfreq.o

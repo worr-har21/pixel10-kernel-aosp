@@ -1,0 +1,60 @@
+# SPDX-License-Identifier: MIT
+
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+load(
+    "//build/kernel/kleaf:kernel.bzl",
+    "ddk_module",
+)
+
+string_flag(
+    name = "ip_idle",
+    build_setting_default = "undefined",
+)
+
+config_setting(
+    name = "ip_idle_exynos",
+    flag_values = {
+        ":ip_idle": "exynos_ip_idle",
+    },
+)
+
+config_setting(
+    name = "ip_idle_google",
+    flag_values = {
+        ":ip_idle": "google_ip_idle",
+    },
+)
+
+ddk_module(
+    name = "eh",
+    srcs = [
+        "eh_internal.h",
+        "eh_main.c",
+        "eh_regs.h",
+    ],
+    out = "eh.ko",
+    hdrs = [
+        "include/linux/eh.h",
+    ],
+    defconfig = "defconfig",
+    includes = ["include"],
+    kconfig = "Kconfig",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules:__subpackages__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/soc/gs:headers",
+    ] + select({
+        ":ip_idle_exynos": [
+            "//private/google-modules/soc/gs:gs_soc_module",
+        ],
+        ":ip_idle_google": [
+            "//private/google-modules/perf/infra/mbfs",
+            "//private/google-modules/soc/rdo:rdo_soc_headers",
+            "//private/google-modules/soc/rdo:rdo_soc_module",
+        ],
+    }),
+)

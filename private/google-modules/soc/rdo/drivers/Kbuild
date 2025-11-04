@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+obj-y += clk/google/
+obj-y += devfreq/
+obj-y += i2c/busses/
+obj-y += i3c/master/
+obj-y += irqchip/
+obj-y += perf/
+obj-y += pinctrl/
+obj-y += power/
+obj-y += rst/google/
+obj-y += soc/google/
+obj-y += spi/
+obj-y += spmi/
+obj-y += tty/serial/8250/
+obj-y += ufs/
+
+obj-$(CONFIG_GOOGLE_MBA_CTRL) += mailbox/
+obj-$(CONFIG_DMA_ENGINE) += dma/

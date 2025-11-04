@@ -1,0 +1,110 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_module", "kernel_module_group")
+
+ddk_module(
+    name = "panel-google-bigsurf",
+    srcs = [
+        "panel-google-bigsurf.c",
+    ],
+    out = "panel-google-bigsurf.ko",
+    copts = [
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/display/common/gs_drm:gs-drm-connector",
+        "//private/google-modules/display/samsung:exynos-drm",
+        "//private/google-modules/display/samsung:headers",
+        "//private/google-modules/display/samsung/panel:panel-samsung-drv",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "panel-google-hk3",
+    srcs = [
+        "panel-google-hk3.c",
+    ],
+    out = "panel-google-hk3.ko",
+    copts = [
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/display/common/gs_drm:gs-drm-connector",
+        "//private/google-modules/display/samsung:exynos-drm",
+        "//private/google-modules/display/samsung:headers",
+        "//private/google-modules/display/samsung/panel:panel-common",
+        "//private/google-modules/display/samsung/panel:panel-samsung-drv",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "panel-google-shoreline",
+    srcs = [
+        "panel-google-shoreline.c",
+    ],
+    out = "panel-google-shoreline.ko",
+    copts = [
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/display/common/gs_drm:gs-drm-connector",
+        "//private/google-modules/display/samsung:exynos-drm",
+        "//private/google-modules/display/samsung:headers",
+        "//private/google-modules/display/samsung/panel:panel-common",
+        "//private/google-modules/display/samsung/panel:panel-samsung-drv",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "panel-gs-hk3",
+    srcs = [
+        "panel-gs-hk3.c",
+    ],
+    out = "panel-gs-hk3.ko",
+    copts = [
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/display/samsung:headers",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+kernel_module_group(
+    name = "drm_panel.google",
+    srcs = [
+        ":panel-google-bigsurf",
+        ":panel-google-hk3",
+        ":panel-google-shoreline",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)

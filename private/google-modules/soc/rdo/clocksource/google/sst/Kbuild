@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-only
+obj-$(CONFIG_GOOGLE_SST_PLATFORM) += google_sst.o
+google_sst-y += \
+	google_sst_platform.o

@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+obj-$(CONFIG_GOOGLE_SPMI_MBA) += spmi-goog-mba.o
+obj-$(CONFIG_GOOGLE_REGMAP_SPMI) += regmap-goog-spmi.o
+obj-$(CONFIG_SPMI_SMARTDV) += spmi-smartdv.o

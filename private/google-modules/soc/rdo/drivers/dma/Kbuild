@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+subdir-ccflags-y += -I$(srctree)/drivers/dma
+
+# dmaengine debug flags
+subdir-ccflags-$(CONFIG_DMADEVICES_DEBUG)  := -DDEBUG
+subdir-ccflags-$(CONFIG_DMADEVICES_VDEBUG) += -DVERBOSE_DEBUG
+
+# drivers
+obj-$(CONFIG_PL330_DMA_GOOGLE) += pl330.o
+obj-$(CONFIG_GOOGLE_GPDMA) += google-gpdma.o

@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-only
+ccflags-y = -I$(KERNEL_SRC)/drivers/spi
+
+obj-$(CONFIG_SPI_DW_GOOGLE_QUIRKS) += spi-dw-mmio.o

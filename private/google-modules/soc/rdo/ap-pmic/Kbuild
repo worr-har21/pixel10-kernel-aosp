@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: GPL-2.0-only
+subdir-ccflags-y += -Wall -Werror
+
+obj-$(CONFIG_GOOGLE_MFD_DA9186) += da9186-core.o
+obj-$(CONFIG_GOOGLE_MFD_DA9188) += da9188-core.o
+
+obj-y += gpio/
+obj-y += regulator/
+obj-y += rtc/
+obj-y += vgpio/

@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+config USB_DWC3_GOOGLE
+	tristate "Google DWC3 USB"
+	depends on ARCH_GOOGLE
+	depends on USB_DWC3 && GOOGLE_IRM
+	help
+	  Google's Glue driver for the Synopsys DWC3 USB controller.
+	  If unsure select "N".
+
+config USB_XHCI_GOOG_DMA
+	tristate "xHCI DMA driver for Google SoCs"
+	depends on ARCH_GOOGLE
+	help
+	  Say 'Y' to enable the support for the xHCI DMA driver for
+	  Google SoCs.

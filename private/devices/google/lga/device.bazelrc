@@ -1,0 +1,8 @@
+build:lga_base --//private/google-modules/display/common/gs_panel:soc=lga
+build:lga_base --//private/google-modules/power/mitigation:soc=lga
+build:lga_base --//private/google-modules/powervr:soc=lga
+build:lga_base --//private/google-modules/radio/common/metrics_collection:metrics_collection=//private/google-modules/radio/common/metrics_collection:metrics_collection_enabled
+build:lga_base --//private/google-modules/soc/gs/drivers/soc/google/eh:ip_idle=google_ip_idle
+build:lga_base --//private/google-modules/soc/gs:gs_soc_module=//private/devices/google/lga:gs_soc
+build:lga_base --//private/google-modules/soc/rdo:rdo_soc_module=//private/devices/google/lga:lga_soc
+build:lga_base --//private/google-modules/soc/rdo/pci:google-pcie=//private/google-modules/soc/rdo/pci:google-pcie-v1

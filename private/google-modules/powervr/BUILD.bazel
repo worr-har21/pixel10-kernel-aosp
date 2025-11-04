@@ -1,0 +1,87 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+load("//build/kernel/kleaf:kernel.bzl", "checkpatch", "kernel_module")
+
+checkpatch(
+    name = "checkpatch",
+    checkpatch_pl = "//common:scripts/checkpatch.pl",
+)
+
+filegroup(
+    name = "powervr.kconfig",
+    srcs = glob([
+        "**/Kconfig",
+    ]),
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+kernel_module(
+    name = "powervr",
+    srcs = glob([
+        "**/*.c",
+        "**/*.h",
+        "**/*.mk",
+        "**/Kconfig",
+        "**/Makefile",
+    ]) + [
+        "Kbuild",
+        "//private/google-modules/perf:headers",
+        "//private/google-modules/soc/gs:gs_soc_headers",
+        "//private/google-modules/soc/rdo:rdo_soc_headers",
+        "//private/google-modules/trusty:headers",
+    ] + select({
+        ":gs_soc_lga": ["//private/google-modules/iif:iif_headers"],
+        "//conditions:default": [],
+    }),
+    outs = [
+        "pvrsrvkm/pvrsrvkm.ko",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        ":__subpackages__",
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/soc/gs:__pkg__",
+        "//private/google-modules/soc/rdo:__pkg__",
+    ],
+    deps = select({
+        ":gs_soc_rdo": [
+            "//private/google-modules/perf:google_vote_manager",
+            "//private/google-modules/soc/gs:gs_soc_module",
+            "//private/google-modules/soc/rdo:rdo_soc_module",
+            "//private/google-modules/trusty",
+        ],
+        ":gs_soc_lga": [
+            "//private/google-modules/iif",
+            "//private/google-modules/perf:google_vote_manager",
+            "//private/google-modules/soc/gs:gs_soc_module",
+            "//private/google-modules/soc/rdo:rdo_soc_module",
+            "//private/google-modules/trusty",
+        ],
+        "//conditions:default": [],
+    }),
+)
+
+# This flag must be set for all the devices per SOC.
+# The corresponding device specific entries should be added in
+# //private/devices/google/*/device.bazelrc
+string_flag(
+    name = "soc",
+    build_setting_default = "",
+)
+
+config_setting(
+    name = "gs_soc_rdo",
+    flag_values = {
+        ":soc": "rdo",
+    },
+)
+
+config_setting(
+    name = "gs_soc_lga",
+    flag_values = {
+        ":soc": "lga",
+    },
+)

@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+config GOOGLE_CPM_TRACEPOINT
+	tristate "Google CPM tracepoint driver"
+	depends on ARCH_GOOGLE
+	depends on GOOGLE_MBA_CPM_INTERFACE
+	help
+	  Enable support for Google CPM tracepoint driver.
+	  The driver creates a debugfs interface to accept
+	  CPM tracepoint requests from user-space.
+	  The driver retrieves tracepoints from CPM and print them out
+	  to the kernel log.
+	  Say N if you are unsure.

@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-2.0-only
+ccflags-y += -I$(srctree)/drivers/hwtracing/coresight/
+
+obj-$(CONFIG_GOOGLE_ETS) += cs-ets.o
+
+cs-ets-y += coresight-ets-core.o \
+        coresight-tmc-ets.o

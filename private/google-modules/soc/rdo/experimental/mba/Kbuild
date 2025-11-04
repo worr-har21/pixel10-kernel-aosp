@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-2.0-only
+obj-m += mba_old.o
+mba_old-y += \
+	mba_client.o \
+	mba_host.o \
+	mba_internal.o \
+	mba_platform.o

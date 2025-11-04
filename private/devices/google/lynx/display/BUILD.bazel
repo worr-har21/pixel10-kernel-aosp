@@ -1,0 +1,58 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_module", "kernel_module_group")
+
+ddk_module(
+    name = "panel-samsung-s6e3fc3-l10",
+    srcs = [
+        "panel-samsung-s6e3fc3-l10.c",
+    ],
+    out = "panel-samsung-s6e3fc3-l10.ko",
+    copts = [
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/display/samsung:headers",
+        "//private/google-modules/display/samsung/panel:panel-samsung-drv",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "panel-samsung-s6e3fc5",
+    srcs = [
+        "panel-samsung-s6e3fc5.c",
+    ],
+    out = "panel-samsung-s6e3fc5.ko",
+    copts = [
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/display/samsung:headers",
+        "//private/google-modules/display/samsung/panel:panel-samsung-drv",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+kernel_module_group(
+    name = "drm_panel.google",
+    srcs = [
+        ":panel-samsung-s6e3fc3-l10",
+        ":panel-samsung-s6e3fc5",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)

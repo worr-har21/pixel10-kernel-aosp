@@ -1,0 +1,7 @@
+# When adding new entries keep the list in alphabetical order
+
+ifneq ($(CONFIG_SOC_GS101)$(CONFIG_SOC_GS201),)
+obj-$(CONFIG_ODPM) += odpm-whi.o
+else
+obj-$(CONFIG_ODPM) += odpm.o
+endif

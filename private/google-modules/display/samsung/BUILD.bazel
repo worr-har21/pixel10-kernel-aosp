@@ -1,0 +1,248 @@
+# SPDX-License-Identifier: GPL-2.0
+
+# the drm device driver.  This driver provides support for the
+# Direct Rendering Infrastructure (DRI) in XFree86 4.1.0 and higher.
+
+load("//build/kernel/kleaf:kernel.bzl", "checkpatch", "ddk_headers", "ddk_module", "ddk_uapi_headers", "kernel_module_group")
+
+checkpatch(
+    name = "checkpatch",
+    checkpatch_pl = "//common:scripts/checkpatch.pl",
+)
+
+filegroup(
+    name = "display.samsung.kconfig",
+    srcs = [
+        "Kconfig",
+        "//private/google-modules/display/samsung/panel:display.samsung.panel.kconfig",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+ddk_uapi_headers(
+    name = "uapi_headers",
+    srcs = glob([
+        "include/uapi/**/*.h",
+    ]) + [
+        "//common:include/uapi/drm/drm_fourcc.h",
+    ],
+    out = "display-samsung-uapi-headers.tar.gz",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+ddk_headers(
+    name = "headers",
+    hdrs = glob([
+        "include/**/*.h",
+    ]) + [
+        "exynos_drm_connector.h",
+        "exynos_drm_format.h",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/display/samsung/panel:headers",
+    ],
+    includes = [
+        ".",
+        "include/uapi",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/aoc/alsa:__subpackages__",
+        "//private/google-modules/touch:__subpackages__",
+    ],
+)
+
+ddk_headers(
+    name = "internal_headers",
+    hdrs = glob([
+        "**/*.h",
+    ]) + [
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/display/samsung/panel:headers",
+    ],
+    includes = [
+        ".",
+        "cal_common",
+        "cal_stub",
+        "include/uapi",
+    ],
+    visibility = [
+        ":__subpackages__",
+    ],
+)
+
+ddk_module(
+    name = "exynos-drm",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "exynos_drm_connector.c",
+        "exynos_drm_crtc.c",
+        "exynos_drm_debug.c",
+        "exynos_drm_dqe.c",
+        "exynos_drm_drv.c",
+        "exynos_drm_fb.c",
+        "exynos_drm_format.c",
+        "exynos_drm_gem.c",
+        "exynos_drm_hibernation.c",
+        "exynos_drm_partial.c",
+        "exynos_drm_plane.c",
+        "exynos_drm_recovery.c",
+    ],
+    out = "exynos-drm.ko",
+    conditional_srcs = {
+        "CONFIG_DRM_SAMSUNG_DECON": {
+            True: [
+                "exynos_drm_decon.c",
+            ],
+        },
+        "CONFIG_DRM_SAMSUNG_DP": {
+            True: [
+                "exynos_drm_dp.c",
+            ],
+        },
+        "CONFIG_DRM_SAMSUNG_DP_ZUMA": {
+            True: [
+                "displayport/dp_zuma.c",
+            ],
+        },
+        "CONFIG_DRM_SAMSUNG_DPP": {
+            True: [
+                "exynos_drm_dpp.c",
+            ],
+        },
+        "CONFIG_DRM_SAMSUNG_DSI": {
+            True: [
+                "exynos_drm_dsim.c",
+            ],
+        },
+        "CONFIG_DRM_SAMSUNG_TUI": {
+            True: [
+                "exynos_drm_tui.c",
+            ],
+        },
+        "CONFIG_DRM_SAMSUNG_WB": {
+            True: [
+                "exynos_drm_writeback.c",
+            ],
+        },
+        "CONFIG_EXYNOS_BTS": {
+            True: [
+                "exynos_drm_bts.c",
+            ],
+        },
+        "CONFIG_DRM_SAMSUNG_CAL_9845": {
+            True: [
+                "cal_9845/decon_reg.c",
+                "cal_9845/dpp_reg.c",
+                "cal_9845/dqe_reg.c",
+                "cal_9845/dsim_reg.c",
+                "cal_9845/hdr_reg.c",
+            ],
+        },
+        "CONFIG_DRM_SAMSUNG_CAL_9855": {
+            True: [
+                "cal_9855/decon_reg.c",
+                "cal_9855/dpp_reg.c",
+                "cal_9855/dqe_reg.c",
+            ],
+        },
+        "CONFIG_DRM_SAMSUNG_CAL_9865": {
+            True: [
+                "cal_9865/decon_reg.c",
+                "cal_9865/dpp_reg.c",
+                "cal_9865/dqe_reg.c",
+                "cal_9865/dsim_reg.c",
+                "cal_9865/hdr_reg.c",
+            ],
+        },
+        "CONFIG_DRM_SAMSUNG_CAL_9865_DP": {
+            True: [
+                "cal_9865/dp_reg.c",
+            ],
+        },
+    },
+    copts = [
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    visibility = [
+        ":__subpackages__",
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/touch:__subpackages__",
+    ],
+    deps = [
+        ":internal_headers",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/bms/misc:bms-misc",
+        "//private/google-modules/bms/misc:headers",
+        "//private/google-modules/display/common/gs_drm:gs-drm-connector",
+        "//private/google-modules/hdcp/samsung:exynos-hdcp2",
+        "//private/google-modules/soc/gs:gs_soc_module",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "exynos-drm-audio",
+    srcs = [
+        "dp_audio/dp_dma.c",
+        "dp_audio/dp_dma.h",
+    ],
+    out = "exynos-drm-audio.ko",
+    hdrs = [
+        "dp_audio/dp_audio.h",
+    ],
+    copts = [
+        "-Werror",
+    ],
+    includes = [
+        "dp_audio",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/aoc/alsa:__subpackages__",
+        "//private/google-modules/display/samsung:__subpackages__",
+    ],
+    deps = [
+        ":exynos-drm",
+        ":internal_headers",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/aoc/alsa:headers",
+        "//private/google-modules/bms/misc:headers",
+        "//private/google-modules/soc/gs:gs_soc_module",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+kernel_module_group(
+    name = "display.samsung",
+    srcs = [
+        ":exynos-drm",
+        "//private/google-modules/display/samsung/panel:panel-boe-nt37290",
+        "//private/google-modules/display/samsung/panel:panel-common",
+        "//private/google-modules/display/samsung/panel:panel-samsung-drv",
+        "//private/google-modules/display/samsung/panel:panel-samsung-emul",
+        "//private/google-modules/display/samsung/panel:panel-samsung-s6e3fc3",
+        "//private/google-modules/display/samsung/panel:panel-samsung-s6e3fc3-p10",
+        "//private/google-modules/display/samsung/panel:panel-samsung-s6e3hc2",
+        "//private/google-modules/display/samsung/panel:panel-samsung-s6e3hc3",
+        "//private/google-modules/display/samsung/panel:panel-samsung-s6e3hc3-c10",
+        "//private/google-modules/display/samsung/panel:panel-samsung-s6e3hc4",
+        "//private/google-modules/display/samsung/panel:panel-samsung-sofef01",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)

@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-only
+ccflags-y += -I$(srctree)/$(src)
+ccflags-y += -I$(KERNEL_SRC)/../private/google-modules/perf/include
+obj-$(CONFIG_GOOGLE_CPU_FREQ) += google_cpufreq.o

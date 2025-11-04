@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0-only
+subdir-ccflags-y += -Wno-error
+
+obj-$(CONFIG_RDO_CPUIDLE_WFI_ONLY) += cpuidle/
+obj-$(CONFIG_RDO_EXPERIMENTAL_MBA) += mba/
+obj-$(CONFIG_RDO_EXPERIMENTAL_PMIC) += pmic/
+obj-$(CONFIG_RDO_EXPERIMENTAL_APT) += apt/
+obj-$(CONFIG_RDO_EXPERIMENTAL_MANUAL_LPCM) += manual_lpcm/

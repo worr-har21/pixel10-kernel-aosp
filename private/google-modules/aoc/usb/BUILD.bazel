@@ -1,0 +1,58 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+# ASoC-based USB driver
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_module", "kernel_module_group")
+
+filegroup(
+    name = "aoc.usb.kconfig",
+    srcs = [
+        "Kconfig",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+ddk_module(
+    name = "aoc_usb_driver",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "aoc_usb_dev.c",
+    ],
+    out = "aoc_usb_driver.ko",
+    conditional_srcs = {
+        "CONFIG_AOC_USB_VENDOR_HOOKS": {
+            True: [
+                "usb_hooks_impl_whi.c",
+            ],
+        },
+        "CONFIG_AOC_USB_AUDIO_OFFLOAD": {
+            True: [
+                "usb_offload_helper.c",
+            ],
+        },
+    },
+    kernel_build = "//private/devices/google/common:kernel",
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/aoc:aoc_core",
+        "//private/google-modules/aoc:headers",
+        "//private/google-modules/aoc/alsa:aoc_alsa_dev_util",
+        "//private/google-modules/aoc_ipc:ddk_headers",
+        "//private/google-modules/bms/misc:bms-misc",
+        "//private/google-modules/soc/gs:gs_soc_module",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+kernel_module_group(
+    name = "aoc.usb",
+    srcs = [
+        ":aoc_usb_driver",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)

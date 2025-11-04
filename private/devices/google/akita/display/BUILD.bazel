@@ -1,0 +1,61 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_module", "kernel_module_group")
+
+ddk_module(
+    name = "panel-google-ak3a",
+    srcs = [
+        "panel-google-ak3a.c",
+    ],
+    out = "panel-google-ak3a.ko",
+    copts = [
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/display/samsung:headers",
+        "//private/google-modules/display/samsung/panel:panel-samsung-drv",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "panel-google-ak3b",
+    srcs = [
+        "panel-google-ak3b.c",
+    ],
+    out = "panel-google-ak3b.ko",
+    copts = [
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/display/common/gs_drm:gs-drm-connector",
+        "//private/google-modules/display/samsung:exynos-drm",
+        "//private/google-modules/display/samsung:headers",
+        "//private/google-modules/display/samsung/panel:panel-common",
+        "//private/google-modules/display/samsung/panel:panel-samsung-drv",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+kernel_module_group(
+    name = "drm_panel.google",
+    srcs = [
+        ":panel-google-ak3a",
+        ":panel-google-ak3b",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)

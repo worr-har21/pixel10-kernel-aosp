@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+ccflags-y += -DDYNAMIC_DEBUG_MODULE
+
+obj-$(CONFIG_GOOGLE_IRQ_CPM) += irq-google-cpm.o
+
+obj-$(CONFIG_GIA_LIB) += irq-gia-lib.o
+obj-$(CONFIG_GOOGLE_GIA_IRQ) += irq-gia-google.o
+obj-$(CONFIG_GOOGLE_IRQ_EXTENDED_SYSFS) += irq-extended-sysfs.o
+
+obj-$(CONFIG_GOOGLE_GIA_TEST) += irq-gia-google-test.o

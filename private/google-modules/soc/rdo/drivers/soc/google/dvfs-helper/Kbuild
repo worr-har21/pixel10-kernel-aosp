@@ -1,0 +1,2 @@
+# SPDX-License-Identifier: GPL-2.0
+obj-$(CONFIG_GOOGLE_DVFS_HELPER) += dvfs_helper.o

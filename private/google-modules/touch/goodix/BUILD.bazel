@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load("//build/kernel/kleaf:kernel.bzl", "checkpatch", "ddk_module", "kernel_module_group")
+
+checkpatch(
+    name = "checkpatch",
+    checkpatch_pl = "//common:scripts/checkpatch.pl",
+)
+
+ddk_module(
+    name = "goodix_brl_touch",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "goodix_brl_fwupdate.c",
+        "goodix_brl_hw.c",
+        "goodix_brl_i2c.c",
+        "goodix_brl_spi.c",
+        "goodix_cfg_bin.c",
+        "goodix_ts_core.c",
+        "goodix_ts_gesture.c",
+        "goodix_ts_inspect.c",
+        "goodix_ts_proc.c",
+        "goodix_ts_tools.c",
+        "goodix_ts_utils.c",
+        "touch_apis.c",
+        "touch_mf_mode.c",
+    ],
+    out = "goodix_brl_touch.ko",
+    defconfig = "defconfig",
+    kconfig = "Kconfig",
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/soc/gs:gs_soc_module",
+        "//private/google-modules/soc/gs:headers",
+        "//private/google-modules/touch/common:ddk_headers",
+        "//private/google-modules/touch/common:goog_touch_interface",
+    ],
+)
+
+kernel_module_group(
+    name = "goodix",
+    srcs = [
+        ":goodix_brl_touch",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)

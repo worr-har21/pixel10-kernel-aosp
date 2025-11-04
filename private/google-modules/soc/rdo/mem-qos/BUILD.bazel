@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_module")
+
+filegroup(
+    name = "google-mem-qos.kconfig",
+    srcs = [
+        "Kconfig",
+    ],
+    visibility = [
+        "//private/google-modules/soc/rdo:__subpackages__",
+    ],
+)
+
+ddk_module(
+    name = "google-mem-qos",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "google_mem_qos.c",
+        "google_mem_qos_debugfs.c",
+        "google_qos_box.c",
+        "google_qos_box_debugfs.c",
+        "google_qos_box_of.c",
+    ],
+    out = "google-mem-qos.ko",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/edgetpu:__subpackages__",
+        "//private/google-modules/lwis:__subpackages__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/soc/rdo:rdo_soc_headers",
+        "//private/google-modules/soc/rdo:rdo_soc_module",
+    ],
+)
+
+ddk_module(
+    name = "google-mem-qos-mock-client",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "google_mem_qos_mock_client.c",
+    ],
+    out = "google-mem-qos-mock-client.ko",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+    deps = [
+        ":google-mem-qos",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/soc/rdo:rdo_soc_headers",
+    ],
+)

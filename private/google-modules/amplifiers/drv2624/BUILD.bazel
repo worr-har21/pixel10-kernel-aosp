@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_module")
+
+ddk_module(
+    name = "drv2624",
+    srcs = [
+        "drv2624.c",
+        "drv2624.h",
+    ],
+    out = "drv2624.ko",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+    ],
+)

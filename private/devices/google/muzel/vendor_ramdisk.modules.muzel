@@ -1,0 +1,20 @@
+# List of modules loaded during first stage init from vendor_kernel_boot
+# Sort order defined by
+# LC_ALL=C sort
+fw_cs_dsp.ko
+ln8411.ko
+panel-gs-bmea.ko
+panel-gs-cm4.ko
+panel-gs-flea.ko
+panel-gs-fleb.ko
+panel-gs-km4.ko
+panel-gs-simple.ko
+panel-gs-tg4c.ko
+panel-gs-tk4b.ko
+panel-gs-tk4c.ko
+qbt_handler.ko
+snd-soc-cs35l43-i2c.ko
+snd-soc-cs35l43-spi.ko
+snd-soc-cs35l43.ko
+snd-soc-wm-adsp.ko
+tps628600-regulator.ko

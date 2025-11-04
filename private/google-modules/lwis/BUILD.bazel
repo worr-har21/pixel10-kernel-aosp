@@ -1,0 +1,116 @@
+# SPDX-License-Identifier: GPL-2.0
+
+load("//build/kernel/kleaf:kernel.bzl", "checkpatch", "ddk_headers", "ddk_module")
+
+package(
+    default_visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+checkpatch(
+    name = "checkpatch",
+    checkpatch_pl = "//common:scripts/checkpatch.pl",
+)
+
+filegroup(
+    name = "lwis.kconfig",
+    srcs = [
+        "Kconfig",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+ddk_headers(
+    name = "private_headers",
+    hdrs = glob(["*.h"]),
+    includes = ["."],
+    visibility = ["//visibility:private"],
+)
+
+ddk_headers(
+    name = "common_headers",
+    hdrs = [
+        ":private_headers",
+        "//common:all_headers_aarch64",
+    ],
+)
+
+_COMMON_COPTS = [
+    "-Wall",
+    "-Werror",
+]
+
+ddk_module(
+    name = "lwis.anchorage",
+    srcs = glob([
+        "*.c",
+        "platform/anchorage/*.c",
+        "platform/anchorage/*.h",
+    ]),
+    out = "lwis.ko",
+    copts = _COMMON_COPTS,
+    kernel_build = "//private/devices/google/common:kernel",
+    deps = [
+        ":common_headers",
+        "//private/google-modules/soc/gs:gs_soc_module",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "lwis.busan",
+    srcs = glob([
+        "*.c",
+        "platform/busan/*.c",
+        "platform/busan/*.h",
+    ]),
+    out = "lwis.ko",
+    copts = _COMMON_COPTS,
+    kernel_build = "//private/devices/google/common:kernel",
+    deps = [
+        ":common_headers",
+        "//private/google-modules/soc/gs:gs_soc_module",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "lwis.casablanca",
+    srcs = glob([
+        "*.c",
+        "platform/casablanca/*.c",
+        "platform/casablanca/*.h",
+    ]),
+    out = "lwis.ko",
+    copts = _COMMON_COPTS,
+    kernel_build = "//private/devices/google/common:kernel",
+    deps = [
+        ":common_headers",
+        "//private/google-modules/soc/gs:gs_soc_module",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "lwis.dublin",
+    srcs = glob([
+        "*.c",
+        "platform/dublin/*.c",
+        "platform/dublin/*.h",
+    ]),
+    out = "lwis.ko",
+    copts = _COMMON_COPTS,
+    kernel_build = "//private/devices/google/common:kernel",
+    deps = [
+        ":common_headers",
+        "//private/google-modules/perf:google_pm_qos",
+        "//private/google-modules/soc/gs:gs_soc_module",
+        "//private/google-modules/soc/gs:headers",
+        "//private/google-modules/soc/rdo:rdo_soc_headers",
+        "//private/google-modules/soc/rdo:rdo_soc_module",
+        "//private/google-modules/soc/rdo/mem-qos:google-mem-qos",
+    ],
+)

@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: GPL-2.0-only
+obj-$(CONFIG_GOOGLE_DA9186_RTC) += da9186-rtc.o
+obj-$(CONFIG_GOOGLE_DA9188_RTC) += da9188-rtc.o

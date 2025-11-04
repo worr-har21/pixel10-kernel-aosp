@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0
+
+obj-$(CONFIG_GOOGLE_POWERDASHBOARD) += google_powerdashboard.o
+google_powerdashboard-y += \
+	google_powerdashboard_main.o\
+	google_powerdashboard_helper.o\
+
+google_powerdashboard-$(CONFIG_SOC_LGA) += lga/google_powerdashboard_impl.o
+google_powerdashboard-$(CONFIG_SOC_LGA) += lga/google_powerdashboard_sysfs.o

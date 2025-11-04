@@ -1,0 +1,77 @@
+# SPDX-License-Identifier: MIT
+load(
+    "//build/kernel/kleaf:kernel.bzl",
+    "ddk_headers",
+    "ddk_module",
+)
+
+ddk_headers(
+    name = "zram_headers",
+    hdrs = [
+        "zcomp.h",
+        "zram_drv.h",
+        "zram_vh.h",
+    ],
+)
+
+ddk_module(
+    name = "zram_gs",
+    srcs = [
+        "zcomp.c",
+        "zram_drv.c",
+    ],
+    out = "zram_gs.ko",
+    conditional_srcs = {
+        "CONFIG_ZRAM_GS_VENDOR_HOOK": {
+            True: [
+                "zram_vh.c",
+            ],
+        },
+    },
+    defconfig = "defconfig",
+    includes = ["include"],
+    kconfig = "Kconfig",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = ["//private/devices/google:__subpackages__"],
+    deps = [
+        ":zram_headers",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/soc/gs:gs_soc_module",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "zcomp_cpu",
+    srcs = [
+        "zcomp_cpu.c",
+    ],
+    out = "zcomp_cpu.ko",
+    defconfig = "defconfig",
+    kconfig = "Kconfig",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = ["//private/devices/google:__subpackages__"],
+    deps = [
+        ":zram_gs",
+        ":zram_headers",
+        "//common:all_headers_aarch64",
+    ],
+)
+
+ddk_module(
+    name = "zcomp_eh",
+    srcs = [
+        "zcomp_eh.c",
+    ],
+    out = "zcomp_eh.ko",
+    defconfig = "defconfig",
+    kconfig = "Kconfig",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = ["//private/devices/google:__subpackages__"],
+    deps = [
+        ":zram_gs",
+        ":zram_headers",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/soc/gs/drivers/soc/google/eh",
+    ],
+)

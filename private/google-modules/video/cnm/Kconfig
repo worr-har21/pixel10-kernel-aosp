@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Codec3P configuration
+#
+comment "Codec3P video codec"
+
+config CODEC3P
+	tristate "Codec3P video codec"
+	default n
+	help
+	Driver for Codec3P video codec
+
+config CODEC3P_SLC
+	bool "Codec3P SLC support"
+	default y
+	depends on GOOGLE_RA
+	depends on SLC_PARTITION_MANAGER
+	help
+	  Enable SLC for Codec3P. This config
+	  require GOOGLE_RA and SLC_PARTITION_MANAGER.
+	  Select Y if you have such device.
+	  If unsure select "N".

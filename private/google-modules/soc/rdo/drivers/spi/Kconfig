@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+config SPI_DW_GOOGLE_QUIRKS
+	tristate "Support for Synopsys DesignWare DW_apb_ssi quirks"
+	depends on SPI_DESIGNWARE
+	help
+	  Enable support for the SPI controller
+	  on Google devices.
+	  Select Y if you have such device.
+	  If unsure select "N".

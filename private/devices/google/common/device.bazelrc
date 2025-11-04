@@ -1,0 +1,68 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# Copyright (C) 2023 Google LLC
+
+build --flag_alias=kernel_package=//common:kernel_package
+build --flag_alias=use_prebuilt_kernel=//common:use_prebuilt_kernel
+build --flag_alias=nouse_prebuilt_kernel=no//common:use_prebuilt_kernel
+build --flag_alias=use_prebuilt_fips140=//private/devices/google/common:use_prebuilt_fips140
+build --flag_alias=nouse_prebuilt_fips140=no//private/devices/google/common:use_prebuilt_fips140
+
+# Use prebuilt GKI
+build --kernel_package=@//aosp-with-prebuilts
+
+# Use prebuilt fips140.ko
+build --use_prebuilt_fips140
+
+# include unsafe header list
+build --allow_ddk_unsafe_headers
+
+# Debug configs
+import %workspace%/private/devices/google/common/debug/debug.bazelrc
+
+# Factory build
+build:factory --config=pixel_debug_common
+build:factory --//private/devices/google/common:factory
+
+# Testing build, enable gcov
+build:testing --notrim
+build:testing --gcov
+build:testing --nouse_prebuilt_kernel
+
+# Build 16k page size kernel
+build:16k --page_size=16k
+build:16k --nouse_prebuilt_fips140
+
+# For compatibility only. Do no introduce new usage of these configs.
+# Use --kernel_package directly.
+build:aosp_staging --kernel_package=@//aosp-staging
+build:use_source_tree_aosp --kernel_package=@//aosp
+build:use_source_tree_aosp_staging --kernel_package=@//aosp-staging
+
+# Placeholders for soc specific bazelrc files. Add as many as you need.
+try-import %workspace%/.c1.bazelrc
+try-import %workspace%/.c2.bazelrc
+try-import %workspace%/.c3.bazelrc
+try-import %workspace%/.c4.bazelrc
+try-import %workspace%/.c5.bazelrc
+try-import %workspace%/.c6.bazelrc
+try-import %workspace%/.c7.bazelrc
+try-import %workspace%/.c8.bazelrc
+
+# Placeholders for device specific bazelrc files. Add as many as you need.
+try-import %workspace%/.d1.bazelrc
+try-import %workspace%/.d2.bazelrc
+try-import %workspace%/.d3.bazelrc
+try-import %workspace%/.d4.bazelrc
+try-import %workspace%/.d5.bazelrc
+try-import %workspace%/.d6.bazelrc
+try-import %workspace%/.d7.bazelrc
+try-import %workspace%/.d8.bazelrc
+try-import %workspace%/.d9.bazelrc
+try-import %workspace%/.d10.bazelrc
+try-import %workspace%/.d11.bazelrc
+try-import %workspace%/.d12.bazelrc
+try-import %workspace%/.d13.bazelrc
+try-import %workspace%/.d14.bazelrc
+try-import %workspace%/.d15.bazelrc
+try-import %workspace%/.d16.bazelrc

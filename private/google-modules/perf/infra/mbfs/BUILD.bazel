@@ -1,0 +1,49 @@
+# SPDX-License-Identifier: MIT
+load(
+    "//build/kernel/kleaf:kernel.bzl",
+    "ddk_module",
+)
+
+ddk_module(
+    name = "mbfs",
+    srcs = [
+        "mbfs_api.c",
+        "mbfs_backend.h",
+        "mbfs_base.h",
+        "mbfs_mirror.c",
+    ],
+    out = "mbfs.ko",
+    hdrs = [
+        "include/perf/mbfs.h",
+        "include/perf/mbfs_protocol.h",
+    ],
+    includes = ["include"],
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules:__subpackages__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+    ],
+)
+
+ddk_module(
+    name = "mbfs_cpm_backend",
+    srcs = [
+        "mbfs_backend.h",
+        "mbfs_cpm_backend.c",
+    ],
+    out = "mbfs_cpm_backend.ko",
+    kernel_build = "//private/devices/google/common:kernel",
+    # Add "MBFS_DEV" to local_defines to enable removable module during development
+    local_defines = ["DYNAMIC_DEBUG_MODULE"],
+    visibility = ["//private/devices/google:__subpackages__"],
+    deps = [
+        ":mbfs",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/soc/rdo:rdo_soc_headers",
+        # Depend on the below for drivers/soc/google/goog-mba-cpm-iface.ko
+        "//private/google-modules/soc/rdo:rdo_soc_module",
+    ],
+)

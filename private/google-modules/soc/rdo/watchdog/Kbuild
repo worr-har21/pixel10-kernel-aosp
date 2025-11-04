@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: GPL-2.0-only
+obj-$(CONFIG_GOOGLE_WDT) += google_wdt.o
+obj-$(CONFIG_GOOGLE_WDT_TEST) += google_wdt_test.o

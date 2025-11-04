@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+obj-$(CONFIG_GOOGLE_HSION_LPCM) += lpcm-google.o

@@ -1,0 +1,27 @@
+config POWERVR_ROGUE
+	tristate "PowerVR GPU"
+	default n
+	depends on DRM
+	help
+	  Driver for PowerVR graphics processor hardware.
+
+	  Say Y here if your SoC contains a PowerVR GPU. For more
+	  information, see <http://www.imgtec.com/powervr/>.
+
+config POWERVR_ROGUE_PDUMP
+	bool "Parameter dumping"
+	default n
+	depends on POWERVR_ROGUE
+
+config POWERVR_ROGUE_RESOURCE_INFO
+	bool "Resource info"
+	default n
+	depends on POWERVR_ROGUE
+	help
+	  Annotate device memory allocations with human-readable names.
+	  Requires a compatible userspace driver.
+
+config POWERVR_ROGUE_DEBUG
+	bool "Turn on DDK debug build"
+	default n
+	depends on POWERVR_ROGUE

@@ -1,0 +1,18 @@
+$(obj)/gpca_ecdsa_sig.asn1.o: $(src)/gpca_ecdsa_sig.asn1.c $(src)/gpca_ecdsa_sig.asn1.h
+
+obj-${CONFIG_GOOGLE_GPCA} += gpca.o
+
+ccflags-y += -I$(obj)
+gpca-y += \
+	gpca_platform.o \
+	gpca_keys.o \
+	gpca_cmd.o \
+	gpca_key_policy.o \
+	gpca_op_queue.o \
+	gpca_crypto.o \
+	gpca_hash.o \
+	gpca_cipher.o \
+	gpca_ecdsa_sig.asn1.o \
+	gpca_asymm.o
+
+obj-y += test/

@@ -1,0 +1,82 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+menuconfig ARCH_GOOGLE
+	bool "Google SoC platform"
+	depends on ARM64
+	help
+	  Say Y here to get to see options for platform support for
+	  Google SoC drivers. This option alone does not add any
+	  kernel code. If you say N, all options in this submenu will
+	  be skipped and disabled.
+
+if ARCH_GOOGLE
+
+config SOC_RDO
+	bool "SOC is RDO"
+	help
+	  Select Y if the SOC is Redondo.
+	  SOC is short for System on Chip
+	  RDO is short for Redondo.
+	  RDO kernel modules depend on this configuration.
+
+config SOC_LGA
+	bool "SOC is LGA"
+	help
+	  Select Y if the SOC is Laguna.
+	  SOC is short for System on Chip
+	  LGA is short for Laguna.
+	  LGA kernel modules depend on this configuration.
+
+endif # ARCH_GOOGLE
+
+source "$(KCONFIG_SOC_RDO_PREFIX)ap-pmic/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)boot-diary/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)cap-sysfs/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)clk/google/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)clocksource/google/sst/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)cpm-cli/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)cpm-tracepoint/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)cpmlog/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)cpufreq/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)cs-ets/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)cstate-ctrl/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)devfreq/dsufreq/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/clk/google/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/devfreq/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/dma/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/i2c/busses/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/i3c/master/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/irqchip/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/mailbox/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/perf/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/pinctrl/google/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/power/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/rst/google/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/soc/google/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/spi/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/spmi/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/ufs/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)ebu/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)edac/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)experimental/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)gadget/dta/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)gadget/perf_test/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)gpca/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)hardlockup-debug/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)interconnect/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)ip-idle-notifier/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)cpu-lpm-stats/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)lpcm/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)mem-qos/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)odpm/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)pci/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)phy/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)power-controller/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)powerdashboard/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)pwm/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)soc/google/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)thermal/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)trace/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)drivers/tty/serial/8250/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)usb/Kconfig"
+source "$(KCONFIG_SOC_RDO_PREFIX)watchdog/Kconfig"

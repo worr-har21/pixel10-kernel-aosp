@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# Copyright (C) 2023 Google LLC
+
+build:bluejay --config=gs101_base
+build:bluejay --//private/devices/google/common:kernel=//private/devices/google/bluejay:bluejay/kernel
+build:bluejay --//private/google-modules/radio/samsung/s5300:cpif_with_dit
+build:bluejay --//private/google-modules/touch/common:samsung_drm

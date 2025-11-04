@@ -1,0 +1,1 @@
+private/devices/google/lynx/build_lynx.sh

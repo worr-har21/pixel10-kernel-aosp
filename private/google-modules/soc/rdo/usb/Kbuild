@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: GPL-2.0-only
+ccflags-y = -I$(KERNEL_SRC)/drivers/usb/dwc3/
+ccflags-y += -I$(srctree)/$(src)
+ccflags-y += -I$(srctree)/../private/google-modules/soc/gs/drivers/usb/host/
+
+obj-$(CONFIG_USB_DWC3_GOOGLE) += dwc3-google.o
+
+ifeq ($(CONFIG_SOC_RDO),y)
+dwc3-google-objs += dwc3-google-rdo.o
+endif

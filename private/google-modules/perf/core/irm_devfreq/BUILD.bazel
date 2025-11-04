@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: MIT
+load(
+    "//build/kernel/kleaf:kernel.bzl",
+    "ddk_module",
+)
+
+ddk_module(
+    name = "google_irm_devfreq",
+    srcs = [
+        "google_irm_devfreq.c",
+    ],
+    out = "google_irm_devfreq.ko",
+    includes = [
+        "include",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/perf:__subpackages__",
+        "//private/google-modules/soc/rdo:__pkg__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/perf:google_pm_qos",
+        "//private/google-modules/perf:google_vote_manager",
+        "//private/google-modules/soc/gs:gs_soc_module",
+        "//private/google-modules/soc/gs:headers",
+        "//private/google-modules/soc/rdo:rdo_soc_headers",
+        "//private/google-modules/soc/rdo:rdo_soc_module",
+    ],
+)
+
+exports_files([
+    "Kconfig",
+])

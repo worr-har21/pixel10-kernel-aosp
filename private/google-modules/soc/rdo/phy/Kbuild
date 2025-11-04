@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: GPL-2.0-only
+obj-$(CONFIG_GOOGLE_USB_PHY) += google-usb-phy.o
+
+ifeq ($(CONFIG_SOC_RDO),y)
+google-usb-phy-objs += google-usb-phy-driver-rdo.o
+else
+google-usb-phy-objs += google-usb-phy-driver.o
+endif
+
+google-usb-phy-objs += google-usb-phy-patch.o
+
+obj-$(CONFIG_GOOGLE_EUSB2_REPEATER) += google-eusb2-repeater.o

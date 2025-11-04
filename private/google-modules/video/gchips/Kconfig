@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# BigWave configuration
+#
+comment "BigWave video codec"
+
+config BIGWAVE
+	tristate "BigWave video codec"
+	depends on EXYNOS_BTS
+	default n
+	select PM
+	help
+	Driver for BigWave video codec
+
+config BIGWAVE_ENABLE_SLC
+	bool "BigWave enable SLC"
+	depends on BIGWAVE
+	help
+	Enable SLC for BigWave video codec

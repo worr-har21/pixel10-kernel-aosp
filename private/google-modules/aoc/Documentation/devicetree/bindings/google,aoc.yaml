@@ -1,0 +1,118 @@
+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+%YAML 1.2
+---
+$id: http://devicetree.org/schemas/reserved-memory/google,open-dice.yaml#
+$schema: http://devicetree.org/meta-schemas/core.yaml#
+
+title: AoC SoC
+
+description: |
+  This binding represents the AoC component.
+
+maintainers:
+  - Alex Iacobucci <alexiacobucci@google.com>
+
+properties:
+  compatible:
+    const: google,aoc
+
+  wifi-chip:
+    description:
+      integer specifying the wifi chip for that particulare device.
+    maxItems: 1
+
+  gdmc-iface:
+    description:
+      Reference to the GDMC node, if any.
+    maxItems: 1
+
+  power-domains:
+    description:
+      Power domains relevant for AoC.
+
+  power-domain-names:
+    description:
+      Names for each of the power domains listed in property `power-domains`.
+
+  gsa-enabled:
+    description:
+      Boolean specifying whether GSA boot for AOC is enabled. Must be unset if false.
+    maxItems: 1
+
+required:
+  - compatible
+  - power-domains
+  - power-domain-names
+
+# TODO: add remaining items in required and properties.
+
+examples:
+  - |
+    {
+      aoc: aoc@9000000 {
+        compatible = "google,aoc";
+        reg = <0x0 0x09000000 0x0 0x02000000>,
+          <0x0 0xB4C0000 0x0 0x000be28>;
+        reg-names = "blk_aoc", "lcpm";
+        iommus = <&cpuacc_mmu 0x8300>;
+
+        memory-region = <&aoc_reserve>;
+
+        mboxes = <
+          &aoc_ap_0_mba_client_0 0
+          &aoc_ap_1_mba_client_1 0
+          &aoc_ap_2_mba_client_2 0
+          &aoc_ap_3_mba_client_3 0
+          &aoc_ap_4_mba_client_4 0
+          &aoc_ap_5_mba_client_5 0
+          &aoc_ap_6_mba_client_6 0
+          &aoc_ap_7_mba_client_7 0
+          &aoc_ap_8_mba_client_8 0
+          &aoc_ap_9_mba_client_9 0
+          &aoc_ap_10_mba_client_10 0
+          &aoc_ap_11_mba_client_11 0
+          &aoc_ap_12_mba_client_12 0
+          &aoc_ap_13_mba_client_13 0
+          &aoc_ap_14_mba_client_14 0
+          &aoc_ap_15_mba_client_15 0
+          &aoc_ap_16_mba_client_16 0
+          &aoc_ap_17_mba_client_17 0
+          &aoc_ap_18_mba_client_18 0
+          &aoc_ap_19_mba_client_19 0
+        >;
+
+        power-domains = <&sswrp_aoc_pd>, <&aoc_core_pd>;
+        power-domain-names = "sswrp_aoc_pd", "aoc_core_pd";
+
+        pinctrl-names = "default", "idle";
+        pinctrl-0 = <&aoc_uart0_rxd_rtsn_pins>, <&aoc_uart0_txd_ctsn_pins>,
+          <&aoc_uart1_rxd_rtsn_pins>, <&aoc_uart1_txd_ctsn_pins>,
+          <&aoc_uart2_pins>, <&aoc_i2c2_pins>, <&aoc_i2c4_pins>,
+          <&aoc_i3c0_pins>, <&aoc_i3c1_pins>, <&aoc_tdm1_in_pins>,
+          <&aoc_tdm1_out_pins>, <&aoc_pdm_pins>, <&aoc_pdm1_pins>,
+          <&aoc_pdm2_pins>, <&aoc_pdm3_pins>, <&aoc_tdm0_in_pins>,
+          <&aoc_tdm0_out_pins>, <&aoc_i2s0_in_pins>, <&aoc_i2s0_out_pins>,
+          <&aoc_i2s1_in_pins>, <&aoc_i2s1_out_pins>, <&aoc_modem_out_pins>,
+          <&aoc_modem_in_pins>, <&aoc_modem_pcm_valid_pins>;
+        pinctrl-1 = <>;
+
+        mbox-channels = <20>;
+
+        clock-divider = <1>;
+
+        channel-max-pending-msgs = <128>;
+        block-channel-threshold = <64>;
+
+        notify-on-state-transition = "true";
+        hotword-supported = "true";
+        chre-supported = "true";
+        iommu-config-persistent = "true";
+
+        aoc-coredump-mbox = <19>;
+
+        gdmc-iface = <&goog_mba_gdmc_iface>;
+
+        gsa-device = <&gsa>;
+        gsa-enabled = "true";
+      };
+    };

@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0
+
+obj-$(CONFIG_GOOGLE_LPM_PM_DOMAINS) += lpm_pm_domains.o
+
+lpm_pm_domains-y += lpm-pm-domains.o
+lpm_pm_domains-y += sequences/sequence.o
+
+lpm_pm_domains-y += sequences/aon_sequence.o

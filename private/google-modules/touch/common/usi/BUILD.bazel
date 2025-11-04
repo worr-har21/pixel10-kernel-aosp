@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_module", "kernel_module_group")
+
+ddk_module(
+    name = "goog_usi_stylus",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "goog_usi_stylus.c",
+    ],
+    out = "goog_usi_stylus.ko",
+    hdrs = glob([
+        "**/*.h",
+    ]),
+    includes = [
+        ".",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE",
+    ],
+    visibility = [
+        "//private/google-modules/touch/novatek/nt36xxx:__subpackages__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+    ],
+)
+
+kernel_module_group(
+    name = "touch.common.usi",
+    srcs = [
+        ":goog_usi_stylus",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)

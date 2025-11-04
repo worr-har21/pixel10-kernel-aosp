@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: GPL-2.0-only
+subdir-ccflags-y += -Wall -Werror
+
+obj-$(CONFIG_GOOGLE_DA9186_GPIO) += da9186-gpio.o
+obj-$(CONFIG_GOOGLE_DA9188_GPIO) += da9188-gpio.o

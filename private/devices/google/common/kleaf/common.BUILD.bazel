@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+"""
+Defines kernel targets which are aliases of real kernel targets from the kernel
+package selected by --kernel_package=<package>.
+"""
+
+load("@bazel_skylib//rules:common_settings.bzl", "bool_flag", "string_flag")
+load("//private/devices/google/common/kleaf:kernel_aliases.bzl", "kernel_aliases")
+
+package(
+    default_visibility = [
+        "//visibility:public",
+    ],
+)
+
+_KERNEL_PACKAGES = [
+    "@//aosp",
+    "@//aosp-with-prebuilts",
+    "@//aosp-staging",
+    "@//aosp-bringup",
+]
+
+string_flag(
+    name = "kernel_package",
+    build_setting_default = "@//aosp",
+    values = _KERNEL_PACKAGES,
+)
+
+bool_flag(
+    name = "use_prebuilt_kernel",
+    build_setting_default = True,
+)
+
+kernel_aliases(
+    name = "kernel_aliases",
+    flag = ":kernel_package",
+    packages = _KERNEL_PACKAGES,
+)

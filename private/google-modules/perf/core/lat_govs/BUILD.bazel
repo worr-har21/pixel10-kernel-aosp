@@ -1,0 +1,85 @@
+# SPDX-License-Identifier: MIT
+load(
+    "//build/kernel/kleaf:kernel.bzl",
+    "ddk_module",
+)
+
+ddk_module(
+    name = "gs_governor_utils",
+    srcs = [
+        "gs_governor_utils.c",
+    ],
+    out = "gs_governor_utils.ko",
+    hdrs = [
+        "gs_governor_utils.h",
+        "gs_lat_governors_trace.h",
+    ],
+    includes = [
+        "include",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/perf:gs_perf_headers",
+        "//private/google-modules/perf/core/gs_perf_mon",
+    ],
+)
+
+ddk_module(
+    name = "gs_governor_memlat",
+    srcs = [
+        "gs_governor_memlat.c",
+    ],
+    out = "gs_governor_memlat.ko",
+    hdrs = [
+        "gs_governor_utils.h",
+        "gs_lat_governors_trace.h",
+    ],
+    includes = [
+        "include",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+    deps = [
+        ":gs_governor_utils",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/perf:google_pm_qos",
+        "//private/google-modules/perf:gs_perf_headers",
+        "//private/google-modules/perf/core/gs_perf_mon",
+    ],
+)
+
+ddk_module(
+    name = "gs_governor_dsulat",
+    srcs = [
+        "gs_governor_dsulat.c",
+    ],
+    out = "gs_governor_dsulat.ko",
+    hdrs = [
+        "gs_governor_utils.h",
+        "gs_lat_governors_trace.h",
+    ],
+    includes = [
+        "include",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+    deps = [
+        ":gs_governor_utils",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/perf:google_pm_qos",
+        "//private/google-modules/perf:gs_perf_headers",
+        "//private/google-modules/perf/core/gs_perf_mon",
+    ],
+)
+
+exports_files([
+    "Kconfig",
+])

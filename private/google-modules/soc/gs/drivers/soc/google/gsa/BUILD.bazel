@@ -1,0 +1,74 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load(
+    "//build/kernel/kleaf:kernel.bzl",
+    "ddk_module",
+    "kernel_module",
+)
+
+filegroup(
+    name = "gsa.kconfig",
+    srcs = [
+        "Kconfig",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+kernel_module(
+    name = "gsa",
+    srcs = glob([
+        "**/*.c",
+        "**/*.h",
+    ]) + [
+        "Kbuild",
+        "Makefile",
+        # Dependency header files
+        "//private/google-modules/soc/gs:gs_soc_headers",
+        "//private/google-modules/trusty:headers",
+    ],
+    outs = [
+        "gsa.ko",
+        "gsa_gsc.ko",
+        "tzprot.ko",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/aoc:__pkg__",
+        "//private/google-modules/display:__subpackages__",
+        "//private/google-modules/edgetpu:__subpackages__",
+        "//private/google-modules/gxp:__subpackages__",
+    ],
+    deps = [
+        "//private/google-modules/trusty",
+    ],
+)
+
+ddk_module(
+    name = "gsa_core_kunit_test",
+    srcs = [
+        "gsa_core_test.c",
+        "gsa_mbox.h",
+        "gsa_priv.h",
+        "gsa_tz.h",
+        "mock_gsa_mbox.c",
+        "mock_gsa_mbox.h",
+    ],
+    out = "gsa_kunit_test.ko",
+    defconfig = "kunit_defconfig",
+    kconfig = "Kconfig",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+    deps = [
+        ":gsa",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/trusty:trusty_headers",
+    ],
+)
+
+# Public headers are located at
+# //private/google-modules/soc/gs:gs_soc_headers

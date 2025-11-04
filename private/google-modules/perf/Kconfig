@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/perf/core/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/perf/thermal/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/perf/memory/Kconfig"

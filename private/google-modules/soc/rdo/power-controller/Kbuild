@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: GPL-2.0
+
+subdir-ccflags-y += \
+		-I$(KERNEL_SRC)/../private/google-modules/bms
+
+ccflags-y += -DDYNAMIC_DEBUG_MODULE
+
+EXTRA_SYMBOLS += $(OUT_DIR)/../private/google-modules/bms/misc/Module.symvers
+
+obj-$(CONFIG_GOOGLE_POWER_CONTROLLER) += power_controller.o
+power_controller-y += \
+	pd_latency_profile.o \
+	gpu_core_logic.o \
+	lga_cpm_mappings.o \
+	power_controller_main.o

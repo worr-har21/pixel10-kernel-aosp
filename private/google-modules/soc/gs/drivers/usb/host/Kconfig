@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: GPL-2.0
+#
+# USB Host Controller Drivers
+#
+
+if USB_XHCI_HCD
+
+config USB_XHCI_EXYNOS
+	tristate "xHCI support for EXYNOS SoCs"
+	help
+	  Say 'Y' to enable the support for the xHCI host controller
+	  found in Exynos SoCs.
+
+config USB_XHCI_GOOG_DMA
+	tristate "xHCI DMA driver for GOOG SoCs"
+	help
+	  Say 'Y' to enable the support for the xHCI DMA driver for
+	  GOOG SoCs.
+
+config USB_VENDOR_HOOKS
+	bool "Enable USB vendor hooks"
+	depends on USB_XHCI_EXYNOS
+	default n
+	help
+	  This config is used to enable/disable the USB vendor hooks.
+
+endif # USB_XHCI_HCD

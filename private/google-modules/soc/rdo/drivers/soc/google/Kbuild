@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+ccflags-y += -DDYNAMIC_DEBUG_MODULE
+
+obj-y += cdd/
+obj-y += cdd-cpu/
+obj-y += debug/
+obj-y += dvfs-helper/
+obj-y += lpm-pm-domains/
+obj-y += ra/
+obj-y += vdu/
+
+obj-$(CONFIG_GOOGLE_MBA_AGGREGATOR) += goog-mba-aggr.o
+obj-$(CONFIG_GOOGLE_MBA_GDMC_INTERFACE) += goog-mba-gdmc-iface.o
+obj-$(CONFIG_GOOGLE_MBA_GDMC_INTERFACE_TEST) += goog-mba-gdmc-iface-test.o
+obj-$(CONFIG_GOOGLE_MBA_CPM_INTERFACE) += goog-mba-cpm-iface.o
+obj-$(CONFIG_GOOGLE_MBA_CPM_INTERFACE_TEST) += goog-mba-cpm-iface-test.o
+obj-$(CONFIG_GOOGLE_GDMC_DHUB) += google_gdmc_dhub.o
+obj-$(CONFIG_PIXEL_DEBUG_KINFO) += pixel-debug-kinfo.o
+obj-$(CONFIG_GS_DEBUG_TEST) += gs-debug-test.o
+obj-$(CONFIG_GOOGLE_CHIP_INFO) += goog-chip-info.o
+obj-$(CONFIG_GOOGLE_GTC) += google_gtc.o
+obj-$(CONFIG_GOOGLE_TIMESTAMP_SYNC) += google_timestamp_sync.o

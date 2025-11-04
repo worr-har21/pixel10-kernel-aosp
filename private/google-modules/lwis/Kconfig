@@ -1,0 +1,12 @@
+#
+# LWIS camera drivers
+#
+
+config LWIS
+      tristate "Drivers under LWIS implementation"
+      depends on ARCH_GOOGLE
+      default n
+      help
+		    This is the LWIS implementation
+
+

@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-2.0-only
+COMMON_INCLUDE_DIR = $(srctree)/$(src)/include
+
+subdir-ccflags-y += -Wall -Werror
+subdir-ccflags-y += -I$(COMMON_INCLUDE_DIR)
+subdir-ccflags-y += -I$(COMMON_INCLUDE_DIR)/cap_sysfs
+subdir-ccflags-y += -I$(COMMON_INCLUDE_DIR)/sst
+subdir-ccflags-y += -I$(COMMON_INCLUDE_DIR)/linux
+
+obj-$(CONFIG_RDO_EXPERIMENTAL) += experimental/
+
+# Unconditionally include subdirectories with Kbuild files that
+# conditionally build using Kconfig options.
+obj-y += ap-pmic/
+obj-y += boot-diary/
+obj-y += cap-sysfs/
+obj-y += clk/google/
+obj-y += clocksource/google/sst/
+obj-y += cpm-cli/
+obj-y += cpm-tracepoint/
+obj-y += cpmlog/
+obj-y += cpufreq/
+obj-y += cs-ets/
+obj-y += cstate-ctrl/
+obj-y += devfreq/dsufreq/
+obj-y += drivers/
+obj-y += ebu/
+obj-y += edac/
+obj-y += gadget/
+obj-y += gpca/
+obj-y += hardlockup-debug/
+obj-y += interconnect/
+obj-y += ip-idle-notifier/
+obj-y += cpu-lpm-stats/
+obj-y += lpcm/
+obj-y += odpm/
+obj-y += phy/
+obj-y += power-controller/
+obj-y += powerdashboard/
+obj-y += pwm/
+obj-y += soc/
+obj-y += thermal/
+obj-y += trace/
+obj-y += usb/
+obj-y += watchdog/

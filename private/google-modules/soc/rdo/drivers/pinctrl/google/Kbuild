@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+ccflags-y = -I$(KERNEL_SRC)/drivers/pinctrl
+
+obj-$(CONFIG_PINCTRL_GOOGLE) += pinctrl.o
+pinctrl-y += common.o
+pinctrl-y += pinctrl-trace.o
+pinctrl-$(CONFIG_DEBUG_FS) += pinctrl-debugfs.o
+pinctrl-$(CONFIG_PINCTRL_RDO) += pinctrl-rdo.o
+pinctrl-$(CONFIG_PINCTRL_LGA) += pinctrl-lga.o
+
+obj-y += test/

@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+config GOOGLE_VOLATILE_DEBUG_UNLOCK
+	tristate "Google Volatile Debug Unlock"
+	help
+	  Volatile Debug Unlock is a kernel driver that offers its
+	  interface through sysfs files, and it enables interaction
+	  with the VDU hardware for authentication and status queries.
+	  It facilitates device information retrieval, authentication
+	  flow support, and status checks, and it is used to establish
+	  and manage VDU sessions.

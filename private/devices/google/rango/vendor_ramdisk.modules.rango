@@ -1,0 +1,14 @@
+# List of modules loaded during first stage init from vendor_kernel_boot
+# Sort order defined by
+# LC_ALL=C sort
+fw_cs_dsp.ko
+hall_sensor.ko
+panel-gs-km4.ko
+panel-gs-rgea.ko
+panel-gs-rgeb.ko
+panel-gs-simple.ko
+panel-gs-tk4c.ko
+snd-soc-cs35l43-i2c.ko
+snd-soc-cs35l43-spi.ko
+snd-soc-cs35l43.ko
+snd-soc-wm-adsp.ko

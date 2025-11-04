@@ -1,0 +1,70 @@
+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+# Copyright 2023 Google LLC
+%YAML 1.2
+---
+$id: http://devicetree.org/schemas/dpm/google,dpm.yaml#
+$schema: http://devicetree.org/meta-schemas/core.yaml#
+
+title: Debug Policy Module (DPM) config sources
+
+maintainers:
+  - Kanstantsin Yarmash <kyarmash@google.com>
+
+description:
+  Define different property values for user, userdebug or eng DPM image
+
+properties:
+  version:
+    description: Used to manage the automatic DPM install. After each change
+      to the Debug Policy sources, the value of the version field should be
+      incremented and propagated to all DP variants, even if there are no
+      changes to them.
+
+  variant:
+    description: Used to determine Android build type user/eng/userdebug
+    - enum:
+      - user
+      - eng
+      - userdebug
+
+  security:
+    type: object
+    description: Configuration values for the TF-A firmware
+
+  abl:
+    type: object
+    description: Configuration values for the ABL firmware
+
+  feature:
+    type: object
+    description: Configuration values for the Crash Debug Dump (CDD) driver
+
+required:
+  - version
+  - variant
+
+additionalProperties: false
+
+examples:
+  - |
+  dpm {
+    version = <101>;
+    variant = "user";
+
+    security {
+      sdm_enable = <0>;
+      ERXPFG_enable = <0>;
+    };
+
+    abl {
+      ramdump_mode = <0>;
+      ramdump2usb = <0>;
+    };
+
+    feature {
+      dump-mode {
+        enabled = <1>;
+      };
+    };
+  };
+...

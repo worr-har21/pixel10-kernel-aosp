@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: MIT
+load(
+    "//build/kernel/kleaf:kernel.bzl",
+    "ddk_module",
+)
+
+ddk_module(
+    name = "gs_domain_idle",
+    srcs = [
+        "gs_domain_idle.c",
+    ],
+    out = "gs_domain_idle.ko",
+    includes = [
+        "include",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/perf:__subpackages__",
+        "//private/google-modules/soc/rdo:__subpackages__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/perf:gs_perf_headers",
+    ],
+)
+
+exports_files([
+    "Kconfig",
+])

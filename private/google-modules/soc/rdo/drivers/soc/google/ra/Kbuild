@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-2.0
+obj-$(CONFIG_GOOGLE_RA) += google-ra.o
+
+google-ra-y += google_ra.o
+google-ra-$(CONFIG_DEBUG_FS) += google_ra_debugfs.o
+
+obj-$(CONFIG_GOOGLE_RA_TEST_CLIENT) += google-ra-test-client.o

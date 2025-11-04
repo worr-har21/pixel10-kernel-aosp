@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# Copyright (C) 2023 Google LLC
+
+build:comet --config=zumapro_base
+build:comet --//private/devices/google/common:kernel=//private/devices/google/comet:comet/kernel
+build:comet --//private/google-modules/touch/common:samsung_drm

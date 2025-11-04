@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0-only
+obj-m += apt.o
+apt-y += \
+	apt_clocksource.o \
+	apt_gt_comp.o \
+	apt_internal.o \
+	apt_lt.o \
+	apt_platform.o

@@ -1,0 +1,114 @@
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-displayport/hpd
+Date:		October 2024
+KernelVersion:	6.6
+Contact:	"Petri Gynther" <pgynther@google.com>
+Description:
+		USB HAL uses this interface to report HPD events.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-displayport/irq_hpd
+Date:		October 2024
+KernelVersion:	6.6
+Contact:	"Petri Gynther" <pgynther@google.com>
+Description:
+		USB HAL uses this interface to report IRQ_HPD events.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-displayport/link_lanes
+Date:		October 2024
+KernelVersion:	6.6
+Contact:	"Petri Gynther" <pgynther@google.com>
+Description:
+		Interface to check on current DP link lane count.
+		When DP link is up, returns 1, 2, or 4.
+		When DP link is down, returns -1.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-displayport/link_rate
+Date:		October 2024
+KernelVersion:	6.6
+Contact:	"Petri Gynther" <pgynther@google.com>
+Description:
+		Interface to check on current DP link rate.
+		When DP link is up, returns 0 (RBR), 1 (HBR), 2 (HBR2), or 3 (HBR3).
+		When DP link is down, returns -1.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-displayport/link_status
+Date:		October 2024
+KernelVersion:	6.6
+Contact:	"Petri Gynther" <pgynther@google.com>
+Description:
+		USB HAL uses this interface to check on DP link status.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-displayport/orientation
+Date:		October 2024
+KernelVersion:	6.6
+Contact:	"Petri Gynther" <pgynther@google.com>
+Description:
+		USB HAL uses this interface to report DP cable orientation.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-displayport/pin_assignment
+Date:		October 2024
+KernelVersion:	6.6
+Contact:	"Petri Gynther" <pgynther@google.com>
+Description:
+		USB HAL uses this interface to report DP cable pin assignment.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-displayport/usbc_cable_disconnect
+Date:		October 2024
+KernelVersion:	6.6
+Contact:	"Petri Gynther" <pgynther@google.com>
+Description:
+		USB HAL uses this interface to report USB-C cable physical disconnect.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-hdcp/hdcp0_count
+Date:		February 2025
+KernelVersion:	6.6
+Contact:	"Ji Soo Shin" <jisshin@google.com>
+Description:
+		USB HAL uses this interface to report number of times connected
+		to HDCP unsupporting device.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-hdcp/hdcp1_fail_count
+Date:		February 2025
+KernelVersion:	6.6
+Contact:	"Ji Soo Shin" <jisshin@google.com>
+Description:
+		USB HAL uses this interface to report number of failed HDCP
+		connections against HDCP-1 supported device.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-hdcp/hdcp1_success_count
+Date:		February 2025
+KernelVersion:	6.6
+Contact:	"Ji Soo Shin" <jisshin@google.com>
+Description:
+		USB HAL uses this interface to report number of successful HDCP
+		connections against HDCP-1 supported device.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-hdcp/hdcp2_fail_count
+Date:		February 2025
+KernelVersion:	6.6
+Contact:	"Ji Soo Shin" <jisshin@google.com>
+Description:
+		USB HAL uses this interface to report number of failed HDCP
+		connections against HDCP-2 supported device.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-hdcp/hdcp2_fallback_count
+Date:		February 2025
+KernelVersion:	6.6
+Contact:	"Ji Soo Shin" <jisshin@google.com>
+Description:
+		USB HAL uses this interface to report number of HDCP-1 fallback
+		connections against HDCP-2 supported device.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-hdcp/hdcp2_success_count
+Date:		February 2025
+KernelVersion:	6.6
+Contact:	"Ji Soo Shin" <jisshin@google.com>
+Description:
+		USB HAL uses this interface to report number of successful HDCP
+		conncetions against HDCP-2 supported device.
+
+What:		/sys/devices/platform/c600000.dwc_dptx/drm-hdcp/hdcp_enc_lvl
+Date:		February 2025
+KernelVersion:	6.6
+Contact:	"Ji Soo Shin" <jisshin@google.com>
+Description:
+		USB HAL uses this interface to report HDCP encryption level.

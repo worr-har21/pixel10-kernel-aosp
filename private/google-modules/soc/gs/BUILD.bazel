@@ -1,0 +1,140 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+# For the bazel BUILD rule that builds this module, refer to the value of
+# `//private/google-modules/soc/gs:gs_soc_module` in the corresponding
+#   private/device/google/*/device.bazelrc
+# Generally, it is at
+#   private/device/google/**/BUILD.bazel
+
+load("//build/kernel/kleaf:kernel.bzl", "checkpatch", "ddk_headers", "ddk_uapi_headers")
+
+package(
+    default_visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules:__subpackages__",
+    ],
+)
+
+checkpatch(
+    name = "checkpatch",
+    checkpatch_pl = "//common:scripts/checkpatch.pl",
+)
+
+# Force the user to define the generic gs_* flags
+filegroup(
+    name = "gs_undefined",
+    srcs = [],
+)
+
+label_flag(
+    name = "gs_soc_module",
+    build_setting_default = ":gs_undefined",
+)
+
+filegroup(
+    name = "gs_soc.kconfig",
+    srcs = glob([
+        "**/Kconfig",
+    ]),
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+filegroup(
+    name = "gs.dt-bindings",
+    srcs = glob([
+        "include/dt-bindings/**",
+        "include/dtc/**",
+    ]),
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+filegroup(
+    name = "gs_soc_sources",
+    srcs = glob(
+        ["**"],
+        exclude = [
+            ".*",
+            ".*/**",
+            "BUILD.bazel",
+            "build.config.*",
+        ],
+    ) + [
+        "//private/google-modules/bms/misc:headers",
+    ],
+    visibility = [
+        # keep sorted
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+filegroup(
+    name = "gs_soc_headers",
+    srcs = glob([
+        # Standard pixel headers
+        "include/**/*.h",
+        "include/**/uapi/*.h",
+    ] + [
+        # List of headers needed by external modules
+        "drivers/dma-buf/heaps/samsung/samsung-dma-heap.h",
+        "drivers/soc/google/vh/include/pixel_em.h",
+        "drivers/soc/google/vh/include/sched.h",
+        "drivers/usb/dwc3/google-role-sw.h",
+        "drivers/usb/host/xhci-exynos.h",
+        "drivers/usb/host/xhci-goog-dma.h",
+        "drivers/usb/typec/tcpm/google/google_tcpci_shim.h",
+        "drivers/usb/typec/tcpm/google/tcpci_max77759.h",
+        "drivers/usb/typec/tcpm/google/usb_psy.h",
+
+        # Needed for external modules to include in their makefiles
+        "Makefile.include",
+    ]),
+    visibility = [
+        # keep sorted
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules:__subpackages__",
+    ],
+)
+
+ddk_headers(
+    name = "headers",
+    hdrs = [":gs_soc_headers"],
+    includes = [
+        "drivers/dma-buf/heaps",
+        "drivers/soc/google/vh/include",
+        "drivers/usb/dwc3",
+        "drivers/usb/host",
+        "drivers/usb/typec/tcpm/google",
+        "include",
+        "include/uapi",
+    ],
+)
+
+ddk_uapi_headers(
+    name = "misc_uapi_headers",
+    srcs = [
+        "include/uapi/misc/crashinfo.h",
+    ],
+    out = "misc-uapi-headers.tar.gz",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = ["//private/devices/google:__subpackages__"],
+)
+
+ddk_uapi_headers(
+    name = "exynos_uapi_headers",
+    srcs = [
+        "include/uapi/linux/videodev2_exynos_media.h",
+    ],
+    out = "exynos-uapi-headers.tar.gz",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = ["//private/devices/google:__subpackages__"],
+)
+
+exports_files([
+    # keep sorted
+    "Kconfig.ext",
+    "Makefile",
+])

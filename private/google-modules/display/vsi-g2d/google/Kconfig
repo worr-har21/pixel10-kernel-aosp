@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: MIT
+
+config DRM_G2D
+	tristate "VSI G2D support using DRM/KMS"
+	depends on DRM
+	select DRM_KMS_HELPER
+	help
+	  Choose this option if you have a VeriSilicon G2D block
+	  and want to use the DRM KMS driver for it developed by Google.

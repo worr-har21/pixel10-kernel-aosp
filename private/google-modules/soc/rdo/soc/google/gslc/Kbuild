@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+obj-$(CONFIG_GOOGLE_SLC) += gslc.o
+
+gslc-y +=  gslc_cpm_mba.o \
+	   gslc_debugfs.o \
+	   gslc_partition.o \
+	   gslc_platform.o \
+	   gslc_pt_ops.o \
+	   gslc_regmap.o

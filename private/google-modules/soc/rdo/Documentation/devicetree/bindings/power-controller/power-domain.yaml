@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) Copyright 2024 Google
+# LLC
+%YAML 1.2 --- $id:
+  http://devicetree.org/schemas/pinctrl/google,power-controller.yaml# $schema:
+    http://devicetree.org/meta-schemas/core.yaml#
+
+title: Google Power domain
+
+maintainers: - Mahesh Sivasubramanian <msivasub@google.com> - Ben Schwartz
+  <bsschwar@google.com>
+
+description:
+  Defines the power domain properties to control the power of the differens
+  SSWRPS in the subsystem.
+
+
+properties:
+  reg:
+    description:
+      Optional flag for turning on/off specific domains within a SSWRP. For now,
+      applicable only for GPU.
+
+  sswrp-id:
+    description:
+      Enum of the SSWRP thats powered down/off
+
+  power-domains:
+    description:
+      For subdomains within a SSWRP, defines the parent subdomain reference. Not
+      required if power domain is the top domain.
+
+  subdomain-id:
+    description:
+      Unique ID for a subdomain within Parent domain. Not
+      required for parent domains.
+
+  on-at-init:
+    description:
+      Optional boolean flag indicating that the power domains
+      needs to be turned on during init.
+
+  rpm-always-on:
+    description:
+      Optional flag to disallow runtime pm suspend
+
+  irq-safe:
+    description:
+      Optional flag to indicate a power domain as IRQ-safe
+
+  always-on:
+    description:
+      Optional flag to disallow power down.
+
+  use-smc:
+    description:
+      Make SMC service calls to initiate a power transition instead of going
+      through the CPM mailbox. Some power domains could be powered on from
+      interrupt handlers and the delays around CPM mailbox maynot be acceptable.
+      This may be used only for power domains for which AP is the only client
+      voting for it.
+
+  no-auto-resume:
+    description:
+      Overwrite power domain's resume_noirq callback, so when kernel resume flow
+      is triggered and a device driver is being resumed its power domain is not
+      automatically turned on, which is the default linux behaviour.

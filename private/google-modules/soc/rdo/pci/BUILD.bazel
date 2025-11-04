@@ -1,0 +1,77 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_headers", "ddk_module")
+
+label_flag(
+    name = "google-pcie",
+    build_setting_default = ":no-pcie",
+    visibility = [
+        "//private/google-modules/radio:__subpackages__",
+        "//private/google-modules/wlan/bcmdhd:__subpackages__",
+    ],
+)
+
+ddk_headers(
+    name = "no-pcie",
+)
+
+ddk_headers(
+    name = "tracepoint_header",
+    hdrs = [
+        "pcie_trace.h",
+    ],
+    includes = [
+        ".",
+    ],
+)
+
+ddk_module(
+    name = "google-pcie-v1",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "pcie-designware-host-customized.c",
+        "pcie-google-shim.c",
+    ],
+    out = "google-pcie.ko",
+    conditional_srcs = {
+        "CONFIG_DEBUG_FS": {
+            True: [
+                "pcie-google-debugfs.c",
+            ],
+        },
+        "CONFIG_SOC_LGA": {
+            True: [
+                "pcie-google.c",
+                "pcie_phy_fw.c",
+            ],
+        },
+        "CONFIG_SOC_RDO": {
+            True: [
+                "pcie-google-rdo.c",
+                "pcie_phy_fw_rdo.c",
+            ],
+        },
+    },
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/radio:__subpackages__",
+        "//private/google-modules/wlan/bcmdhd:__subpackages__",
+    ],
+    deps = [
+        ":tracepoint_header",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/perf:gs_perf_headers",
+        "//private/google-modules/perf/core/gs_domain_idle",
+        "//private/google-modules/soc/rdo:rdo_soc_headers",
+        "//private/google-modules/soc/rdo:rdo_soc_module",
+    ],
+)
+
+exports_files(
+    ["Kconfig"],
+    visibility = [
+        "//private/google-modules/soc/rdo:__subpackages__",
+    ],
+)

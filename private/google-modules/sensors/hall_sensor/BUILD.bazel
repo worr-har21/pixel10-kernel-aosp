@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: GPL-2.0
+
+load("//build/kernel/kleaf:kernel.bzl", "checkpatch", "ddk_module")
+
+checkpatch(
+    name = "checkpatch",
+    checkpatch_pl = "//common:scripts/checkpatch.pl",
+)
+
+ddk_module(
+    name = "hall_sensor",
+    srcs = [
+        "hall_sensor.c",
+    ],
+    out = "hall_sensor.ko",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+    ],
+)

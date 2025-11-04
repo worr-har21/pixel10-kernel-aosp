@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+obj-$(CONFIG_GOOGLE_CRASH_DEBUG_DUMP)	:= gcdd.o
+gcdd-y += google-cdd.o google-cdd-log.o google-cdd-log-suspend.o google-cdd-utils.o google-cdd-dpm.o
+

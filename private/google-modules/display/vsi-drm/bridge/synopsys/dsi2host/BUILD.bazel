@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_module")
+
+ddk_module(
+    name = "mipi-dsi2h",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "dw-mipi-dsi2h.c",
+        "dw-mipi-dsi2h-debugfs.c",
+    ],
+    out = "mipi-dsi2h.ko",
+    copts = [
+        "-Wall",
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    visibility = [
+        "//private/google-modules/display/vsi-drm:__pkg__",
+        "//private/google-modules/display/vsi-drm/verisilicon:__pkg__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/display/common/gs_drm:gs-drm-connector",
+        "//private/google-modules/display/vsi-drm:ddk_headers",
+        "//private/google-modules/soc/rdo:rdo_soc_headers",
+    ],
+)
+
+exports_files(
+    [
+        "Kconfig",
+    ],
+    [
+        "//private/google-modules/display/vsi-drm:__pkg__",
+    ],
+)

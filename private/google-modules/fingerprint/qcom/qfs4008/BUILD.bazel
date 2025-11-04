@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+load("//build/kernel/kleaf:kernel.bzl", "checkpatch", "ddk_headers", "ddk_module")
+
+checkpatch(
+    name = "checkpatch",
+    checkpatch_pl = "//common:scripts/checkpatch.pl",
+)
+
+ddk_headers(
+    name = "headers",
+    hdrs = glob([
+        "**/*.h",
+    ]),
+    includes = [
+        ".",
+    ],
+)
+
+filegroup(
+    name = "qbt_handler.kconfig",
+    srcs = [
+        "Kconfig",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/soc/gs:__pkg__",
+    ],
+)
+
+ddk_module(
+    name = "qbt_handler",
+    srcs = [
+        "qbt_handler.c",
+        "qbt_handler.h",
+    ],
+    out = "qbt_handler.ko",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/touch/common:ddk_headers",
+        "//private/google-modules/touch/common:goog_touch_interface",
+    ],
+)

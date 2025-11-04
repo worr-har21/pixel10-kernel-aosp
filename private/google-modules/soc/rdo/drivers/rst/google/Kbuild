@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: GPL-2.0
+obj-$(CONFIG_GOOGLE_CPM_RST) += rst-cpm.o
+obj-$(CONFIG_GOOGLE_CPM_RST_TEST) += rst-cpm_test.o

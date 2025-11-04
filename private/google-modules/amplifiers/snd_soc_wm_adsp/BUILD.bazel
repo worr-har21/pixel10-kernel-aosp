@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_headers", "ddk_module")
+
+ddk_headers(
+    name = "headers",
+    hdrs = [
+        "wm_adsp.h",
+        "wmfw.h",
+    ],
+    includes = [
+        ".",
+    ],
+    visibility = [
+        "//private/google-modules/amplifiers:__subpackages__",
+    ],
+)
+
+ddk_module(
+    name = "snd-soc-wm-adsp",
+    srcs = [
+        "wm_adsp.c",
+        "wm_adsp.h",
+        "wmfw.h",
+    ],
+    out = "snd-soc-wm-adsp.ko",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/amplifiers:__subpackages__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+    ],
+)

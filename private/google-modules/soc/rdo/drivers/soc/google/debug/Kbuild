@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+obj-$(CONFIG_GOOGLE_PMU_EHLD) += google-pmu-ehld.o
+obj-$(CONFIG_GOOGLE_EHLD_COREINSTR) += google-ehld-coreinstr.o
+

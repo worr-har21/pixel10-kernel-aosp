@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: GPL-2.0
+
+config GOOGLE_PMU_EHLD
+	tristate "GOOGLE PMU EHLD Kernel driver"
+	help
+	  Enable support for detecting hardware hang
+
+	  This driver with the help of GDMC monitors CPU state.
+	  If GDMC detects lokcup or hang, it notifies this driver
+	  and the driver obtains necessary debugging information.
+	  Select Y if you have such device.
+
+	  If unsure select "N".
+
+config GOOGLE_EHLD_COREINSTR
+	tristate "Google Coreinstr EHLD Kernel driver"
+	help
+	  Enable support for detecting hardware hang
+
+	  This driver with the help of GDMC monitors CPU state.
+	  If GDMC detects lokcup or hang, it notifies this driver
+	  and the driver obtains necessary debugging information.
+	  Select Y if you have such device.
+
+	  If unsure select "N".

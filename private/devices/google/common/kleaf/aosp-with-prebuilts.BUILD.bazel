@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+"""
+Defines a kernel package which use sources from @//aosp and prebuilts from @gki_prebuilts.
+"""
+
+load("//private/devices/google/common/kleaf:prebuilt_kernel_package.bzl", "prebuilt_kernel_package")
+
+package(
+    default_visibility = ["//visibility:public"],
+)
+
+prebuilt_kernel_package(
+    name = "aosp-with-prebuilts",
+    prebuilt_repos = {
+        "kernel_aarch64": "@gki_prebuilts",
+        "kernel_aarch64_16k": "@gki_prebuilts_16k",
+    },
+    source_package = "@//aosp",
+    use_prebuilt_kernel_flag = "//common:use_prebuilt_kernel",
+)

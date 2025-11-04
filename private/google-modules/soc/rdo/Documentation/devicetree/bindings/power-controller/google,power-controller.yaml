@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) Copyright 2024 Google
+# LLC
+%YAML 1.2 --- $id: http://devicetree.org/schemas/pinctrl/google,pinctrl.yaml#
+$schema: http://devicetree.org/meta-schemas/core.yaml#
+
+title: Google Power controller
+
+maintainers: - Mahesh Sivasubramanian <msivasub@google.com> - Ben Schwartz
+  <bsschwar@google.com>
+
+description: Defines the power controlller configurations for the SSWRPs in the
+  SOC. This node in turn contains a number of subnodes that define the property
+  of every power domain.
+
+properties:
+  compatible:
+    description:
+      Defines the platform/version of power controller.
+    values:
+      - "google,lga-power-controller" - LGA
+
+  mboxes:
+    description:
+      Phandle reference to the CPM mailbox
+
+Example:
+	power_controller: power_controller {
+		compatible = "google,lga-power-controller";
+		mboxes = <&goog_mba_cpm_iface>;
+		#address-cells = <0x00000002>;
+		#size-cells = <0x00000002>;
+		ranges;
+
+		sswrp_gpu_pd: sswrp_gpu_pd {
+			#power-domain-cells = <0>;
+			sswrp-id = <GENPD_LGA_SSWRP_GPU_ID>;
+		};
+
+		gpu_core_logic_pd: gpu_core_logic_pd@34809400 {
+			reg = <0 0x3480a000 0 0x4>,
+						<0 0x34826000 0 0x400>,
+						<0 0x34820a30 0 0x10>,
+						<0 0x34855c40 0 0x10>;
+			reg-names = "gpu_control", "pvtc", "pvtc_pwroff", "dts";
+			#power-domain-cells = <0>;
+			sswrp-id = <GENPD_LGA_SSWRP_GPU_ID>;
+			power-domains = <&sswrp_gpu_pd>;
+			subdomain-id = <GENPD_LGA_GPU_CORE_LOGIC_ID>;
+		};
+	};
+
+

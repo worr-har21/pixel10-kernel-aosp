@@ -1,0 +1,182 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+load("//build/kernel/kleaf:kernel.bzl", "checkpatch", "ddk_headers", "ddk_module", "kernel_module_group")
+
+checkpatch(
+    name = "checkpatch",
+    checkpatch_pl = "//common:scripts/checkpatch.pl",
+)
+
+ddk_headers(
+    name = "headers",
+    hdrs = glob([
+        "**/*.h",
+    ]),
+    includes = [
+        ".",
+        "core_pmic",
+        "ifpmic",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/edgetpu:__subpackages__",
+        "//private/google-modules/gpu:__subpackages__",
+        "//private/google-modules/gxp:__subpackages__",
+        "//private/google-modules/power/mitigation:__subpackages__",
+        "//private/google-modules/soc/gs:__pkg__",
+        "//private/google-modules/soc/rdo:__pkg__",
+    ],
+)
+
+filegroup(
+    name = "bcl.kconfig",
+    srcs = ["Kconfig"],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/soc/gs:__pkg__",
+        "//private/google-modules/soc/rdo:__pkg__",
+    ],
+)
+
+config_setting(
+    name = "soc_rdo",
+    flag_values = {
+        ":soc": "rdo",
+    },
+)
+
+config_setting(
+    name = "soc_lga",
+    flag_values = {
+        ":soc": "lga",
+    },
+)
+
+config_setting(
+    name = "soc_gs",
+    flag_values = {
+        ":soc": "gs",
+    },
+)
+
+string_flag(
+    name = "soc",
+    build_setting_default = "undefined",
+)
+
+ddk_module(
+    name = "google_bcl",
+    srcs = [
+        "google_bcl_core.c",
+        "google_bcl_data_logging.c",
+        "google_bcl_debugfs.c",
+        "google_bcl_irq_mon.c",
+        "google_bcl_sysfs.c",
+        "google_bcl_votable.c",
+        "ifpmic/ifpmic_class.c",
+        "ifpmic/max77759/max77759_vdroop.c",
+        "ifpmic/max77779/max77779_vdroop.c",
+        "ifpmic/max777x9.c",
+    ],
+    out = "google_bcl.ko",
+    conditional_srcs = {
+        "CONFIG_SOC_RDO": {
+            True: [
+                "soc/lga/lga_bcl_qos.c",
+                "soc/lga/lga_bcl_soc.c",
+            ],
+        },
+        "CONFIG_SOC_LGA": {
+            True: [
+                "soc/lga/lga_bcl_qos.c",
+                "soc/lga/lga_bcl_soc.c",
+            ],
+        },
+        "CONFIG_SOC_GS101": {
+            True: [
+                "soc/gs/gs_bcl_qos.c",
+                "soc/gs/gs_bcl_soc.c",
+            ],
+        },
+        "CONFIG_SOC_GS201": {
+            True: [
+                "soc/gs/gs_bcl_qos.c",
+                "soc/gs/gs_bcl_soc.c",
+            ],
+        },
+        "CONFIG_SOC_ZUMA": {
+            True: [
+                "soc/gs/gs_bcl_qos.c",
+                "soc/gs/gs_bcl_soc.c",
+            ],
+        },
+        "CONFIG_REGULATOR_S2MPG14": {
+            True: [
+                "core_pmic/s2mpg1x/s2mpg1x.c",
+                "core_pmic/s2mpg1x/s2mpg1415/s2mpg14_bcl.c",
+                "core_pmic/s2mpg1x/s2mpg1415/s2mpg15_bcl.c",
+                "core_pmic/s2mpg1x/s2mpg1415/s2mpg1x_bcl.c",
+            ],
+        },
+        "CONFIG_REGULATOR_S2MPG12": {
+            True: [
+                "core_pmic/s2mpg1x/s2mpg1x.c",
+                "core_pmic/s2mpg1x/s2mpg1213/s2mpg12_bcl.c",
+                "core_pmic/s2mpg1x/s2mpg1213/s2mpg13_bcl.c",
+                "core_pmic/s2mpg1x/s2mpg1213/s2mpg1x_bcl.c",
+            ],
+        },
+        "CONFIG_REGULATOR_S2MPG10": {
+            True: [
+                "core_pmic/s2mpg1x/s2mpg1x.c",
+                "core_pmic/s2mpg1x/s2mpg1011/s2mpg10_bcl.c",
+                "core_pmic/s2mpg1x/s2mpg1011/s2mpg11_bcl.c",
+                "core_pmic/s2mpg1x/s2mpg1011/s2mpg1x_bcl.c",
+            ],
+        },
+        "CONFIG_GOOGLE_DA9188_REGULATOR_REGISTER_ACCESS": {
+            True: [
+                "core_pmic/da918x/da918x.c",
+                "core_pmic/da918x/da918x_bcl.c",
+            ],
+        },
+    },
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/google-modules/edgetpu:__subpackages__",
+        "//private/google-modules/gpu:__subpackages__",
+        "//private/google-modules/gxp:__subpackages__",
+    ],
+    deps = [
+        ":headers",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/bms:headers",
+        "//private/google-modules/bms:max77759-charger",
+        "//private/google-modules/bms:max77779-charger",
+        "//private/google-modules/bms:max77779-fg",
+        "//private/google-modules/bms:max77779-vimon",
+        "//private/google-modules/bms:max77779_pmic",
+        "//private/google-modules/bms/misc:bms-misc",
+        "//private/google-modules/bms/misc:headers",
+        "//private/google-modules/soc/gs:gs_soc_module",
+        "//private/google-modules/soc/gs:headers",
+        "//private/google-modules/soc/rdo:rdo_soc_headers",
+        "//private/google-modules/soc/rdo:rdo_soc_module",
+    ] + select({
+        ":soc_lga": ["//private/google-modules/perf:google_pm_qos"],
+        ":soc_rdo": ["//private/google-modules/perf:google_pm_qos"],
+        ":soc_gs": [],
+        "//conditions:default": [],
+    }),
+)
+
+kernel_module_group(
+    name = "bcl",
+    srcs = [
+        ":google_bcl",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)

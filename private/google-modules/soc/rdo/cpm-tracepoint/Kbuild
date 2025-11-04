@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0-only
+ccflags-y += -I$(srctree)/$(src)  # This is needed for tracing
+obj-$(CONFIG_GOOGLE_CPM_TRACEPOINT) += google-cpm-tracepoint.o
+google-cpm-tracepoint-y += \
+			   cpm_tracepoint_decoder.o \
+			   google_cpm_tracepoint.o \
+			   perf_tracepoints.o \
+			   thermal_tracepoints.o

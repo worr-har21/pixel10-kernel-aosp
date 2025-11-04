@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+ccflags-y = -I$(KERNEL_SRC)/drivers/ufs/
+ccflags-y += -I$(KERNEL_SRC)/../private/google-modules/soc/rdo/drivers/ufs/
+
+obj-$(CONFIG_UFS_DW_GOOGLE) += ufs.o
+ufs-$(CONFIG_UFS_DW_GOOGLE) += ufs-google.o ufs-google-dbg.o
+ufs-$(CONFIG_SOC_LGA) += lga/ufs-platform.o
+ufs-$(CONFIG_UFS_PIXEL_FEATURES) += ufs-pixel.o
+ufs-$(CONFIG_UFS_PIXEL_CRYPTO) += ufs-pixel-crypto.o

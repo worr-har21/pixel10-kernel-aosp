@@ -1,0 +1,8 @@
+1) GIA HEADER GENERATION:
+-------------------------
+
+Set up:
+Download the interrupt database and pass it to gen-gia-intr-header.py
+
+Usage:
+$ python3 <base_path>/gen-gia-intr-header.py <root_dir_of_interrupt_tracker_data> > irq-gia-google-lga.txt

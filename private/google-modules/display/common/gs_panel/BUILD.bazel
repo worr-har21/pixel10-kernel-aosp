@@ -1,0 +1,85 @@
+# SPDX-License-Identifier: MIT
+
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+load("//build/kernel/kleaf:kernel.bzl", "ddk_module", "kernel_module_group")
+
+config_setting(
+    name = "soc_lga",
+    flag_values = {
+        ":soc": "lga",
+    },
+)
+
+config_setting(
+    name = "soc_gs",
+    flag_values = {
+        ":soc": "gs",
+    },
+)
+
+string_flag(
+    name = "soc",
+    build_setting_default = "undefined",
+)
+
+ddk_module(
+    name = "gs-panel",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "drm_bridge_funcs.c",
+        "drm_panel_funcs_defaults.c",
+        "gs_dsi_dcs_helper.c",
+        "gs_panel.c",
+        "gs_panel_connector_funcs.c",
+        "gs_panel_funcs_defaults.c",
+        "gs_panel_lhbm.c",
+        "gs_panel_sysfs.c",
+        "gs_panel_trace.c",
+    ],
+    out = "gs-panel.ko",
+    conditional_srcs = {
+        "CONFIG_DEBUG_FS": {
+            True: [
+                "gs_panel_debugfs.c",
+            ],
+        },
+        "CONFIG_DEBUG_PANEL_TEST": {
+            True: [
+                "gs_panel_test.c",
+            ],
+        },
+    },
+    copts = [
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    visibility = [
+        "//private/google-modules/display:__subpackages__",
+    ],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/display/common/gs_drm:gs-drm-connector",
+    ] + select({
+        ":soc_lga": [
+            "//private/google-modules/soc/rdo:rdo_soc_headers",
+            "//private/google-modules/soc/rdo:rdo_soc_module",
+        ],
+        ":soc_gs": [],
+        "//conditions:default": [],
+    }),
+)
+
+kernel_module_group(
+    name = "gs_panel",
+    srcs = [
+        ":gs-panel",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)

@@ -1,0 +1,91 @@
+# SPDX-License-Identifier: MIT
+
+load("//build/kernel/kleaf:kernel.bzl", "checkpatch", "ddk_headers", "ddk_module", "ddk_uapi_headers")
+
+checkpatch(
+    name = "checkpatch",
+    checkpatch_pl = "//common:scripts/checkpatch.pl",
+)
+
+filegroup(
+    name = "drm-g2d.kconfig",
+    srcs = glob([
+        "**/Kconfig",
+    ]),
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+ddk_headers(
+    name = "ddk_headers",
+    hdrs = glob([
+        "**/*.h",
+    ]) + [
+        "//private/google-modules/display/common:ddk_headers",
+    ],
+    includes = [
+        ".",
+        "include",
+        "include/uapi",
+    ],
+    visibility = [
+        ":__subpackages__",
+    ],
+)
+
+ddk_uapi_headers(
+    name = "uapi_headers",
+    srcs = glob([
+        "include/uapi/**/*.h",
+    ]),
+    out = "vsi-g2d-uapi-headers.tar.gz",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+ddk_module(
+    name = "drm-g2d",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "google/g2d_crtc.c",
+        "google/g2d_drv.c",
+        "google/g2d_fb.c",
+        "google/g2d_gem.c",
+        "google/g2d_plane.c",
+        "google/g2d_plane_hw.c",
+        "google/g2d_sc.c",
+        "google/g2d_sc_hw.c",
+        "google/g2d_writeback.c",
+        "google/g2d_writeback_hw.c",
+    ],
+    out = "drm_g2d.ko",
+    copts = [
+        "-Wall",
+        "-Werror",
+    ],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE=1",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+    deps = [
+        ":ddk_headers",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/display/common/gs_drm",
+    ],
+)
+
+exports_files(
+    [
+        "Kconfig",
+    ],
+    [
+        "//private/google-modules/display/vsi-g2d:__pkg__",
+    ],
+)

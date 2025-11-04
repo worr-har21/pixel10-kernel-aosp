@@ -1,0 +1,2 @@
+# SPDX-License-Identifier: GPL-2.0-only
+obj-$(CONFIG_GOOGLE_IP_IDLE_NOTIFIER) += google_ip_idle_notifier.o

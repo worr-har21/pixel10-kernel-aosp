@@ -1,0 +1,10 @@
+ccflags-y += -I$(srctree)/$(src)/../
+
+obj-${CONFIG_GOOGLE_GPCA_KEY_TEST} += gpca_keys_test.o
+obj-${CONFIG_GOOGLE_GPCA_CRYPTO_TEST} += gpca_crypto_test_merged.o
+gpca_crypto_test_merged-objs := \
+    gpca_test_common.o \
+    gpca_asymm_test.o \
+    gpca_cipher_test.o \
+    gpca_hash_test.o \
+    gpca_crypto_test.o

@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: GPL-2.0-only
+ccflags-y += -I$(KERNEL_SRC)/../private/google-modules/perf/include
+obj-$(CONFIG_GOOGLE_DSU_FREQ) += google_dsufreq.o

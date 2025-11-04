@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: GPL-2.0-only
+subdir-ccflags-y += -Wall -Werror
+
+obj-$(CONFIG_GOOGLE_DA9186_REGULATOR) += da9186-regulator.o
+obj-$(CONFIG_GOOGLE_DA9188_REGULATOR) += da9188-regulator.o

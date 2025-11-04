@@ -1,0 +1,77 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+source "$(KCONFIG_SOC_RDO_PREFIX)Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/dma-buf/heaps/samsung/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/iommu/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/soc/google/gsa/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/soc/google/pt/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/soc/google/vh/kernel/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/mfd/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/misc/sbb-mux/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/pinctrl/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/power/reset/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/regulator/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/spmi/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/misc/s5910/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/misc/sscoredump/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/usb/dwc3/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/usb/gadget/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/usb/typec/tcpm/google/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/soc/google/Kconfig"
+
+source "$(KCONFIG_SOC_GS_PREFIX)drivers/input/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/aoc/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/aoc/alsa/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/aoc/usb/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/bms/misc/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/display/common/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/display/vsi-drm/bridge/synopsys/dsi2host/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/display/vsi-drm/phy/synopsys/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/display/vsi-drm/verisilicon/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/display/vsi-drm/dwc_dptx/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/display/vsi-g2d/google/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/iommu/arm-smmu-v3/drivers/iommu/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/lwis/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/perf/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/power/reset/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/powervr/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/radio/common/metrics_collection/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/touch/common/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/trusty/drivers/trusty/Kconfig"
+
+source "$(KCONFIG_EXT_MODULES_PREFIX)private/google-modules/video/cnm/Kconfig"

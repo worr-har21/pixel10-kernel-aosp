@@ -1,0 +1,209 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load("@bazel_skylib//rules:common_settings.bzl", "bool_flag", "string_flag")
+load("//build/kernel/kleaf:kernel.bzl", "checkpatch", "ddk_headers", "ddk_module", "ddk_uapi_headers", "kernel_module_group")
+
+checkpatch(
+    name = "checkpatch",
+    checkpatch_pl = "//common:scripts/checkpatch.pl",
+)
+
+filegroup(
+    name = "touch.common.kconfig",
+    srcs = [
+        "Kconfig",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/fingerprint:__subpackages__",
+        "//private/google-modules/soc/gs:__pkg__",
+    ],
+)
+
+string_flag(
+    name = "touch_udfps_notification",
+    build_setting_default = "disabled",
+)
+
+config_setting(
+    name = "touch_udfps_notification_enabled",
+    flag_values = {
+        ":touch_udfps_notification": "enabled",
+    },
+)
+
+config_setting(
+    name = "touch_udfps_notification_disabled",
+    flag_values = {
+        ":touch_udfps_notification": "disabled",
+    },
+)
+
+bool_flag(
+    name = "samsung_drm",
+    build_setting_default = False,
+)
+
+config_setting(
+    name = "samsung_drm_is_true",
+    flag_values = {":samsung_drm": "1"},
+)
+
+ddk_headers(
+    name = "ddk_headers",
+    hdrs = glob([
+        "**/*.h",
+    ]),
+    includes = [
+        ".",
+        "include",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+        "//private/google-modules/fingerprint:__subpackages__",
+        "//private/google-modules/touch:__subpackages__",
+    ],
+)
+
+ddk_uapi_headers(
+    name = "uapi_headers",
+    srcs = glob([
+        "include/uapi/**/*.h",
+    ]),
+    out = "touch.common-uapi-headers.tar.gz",
+    kernel_build = "//private/devices/google/common:kernel",
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)
+
+ddk_module(
+    name = "touch_bus_negotiator",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "touch_bus_negotiator.c",
+    ],
+    out = "touch_bus_negotiator.ko",
+    defconfig = "defconfig_touch_bus_negotiator",
+    kconfig = "Kconfig",
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE",
+    ],
+    visibility = [
+        "//private/google-modules/touch:__subpackages__",
+    ],
+    deps = [
+        ":ddk_headers",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/aoc:aoc_tbn_service_dev",
+        "//private/google-modules/aoc:headers",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "heatmap",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "heatmap.c",
+    ],
+    out = "heatmap.ko",
+    defconfig = "defconfig_heatmap",
+    kconfig = "Kconfig",
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE",
+    ],
+    visibility = [
+        "//private/google-modules/touch:__subpackages__",
+    ],
+    deps = [
+        ":ddk_headers",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/aoc:headers",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "touch_offload",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "touch_offload.c",
+    ],
+    out = "touch_offload.ko",
+    defconfig = "defconfig_touch_offload",
+    kconfig = "Kconfig",
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE",
+    ],
+    visibility = [
+        "//private/google-modules/touch:__subpackages__",
+    ],
+    deps = [
+        ":ddk_headers",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/aoc:headers",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/soc/gs:headers",
+    ],
+)
+
+ddk_module(
+    name = "goog_touch_interface",
+    srcs = glob([
+        "**/*.h",
+    ]) + [
+        "goog_touch_interface.c",
+    ],
+    out = "goog_touch_interface.ko",
+    defconfig = "defconfig_goog_touch_interface",
+    kconfig = "Kconfig",
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = [
+        "DYNAMIC_DEBUG_MODULE",
+    ],
+    visibility = [
+        "//private/google-modules/fingerprint:__subpackages__",
+        "//private/google-modules/touch:__subpackages__",
+    ],
+    deps = [
+        ":ddk_headers",
+        ":heatmap",
+        ":touch_bus_negotiator",
+        ":touch_offload",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/aoc:headers",
+        "//private/google-modules/display/common:ddk_headers",
+        "//private/google-modules/display/common/gs_drm:gs-drm-connector",
+        "//private/google-modules/soc/gs:gs_soc_module",
+        "//private/google-modules/soc/gs:headers",
+    ] + select({
+        ":samsung_drm_is_true": [
+            "//private/google-modules/display/samsung:exynos-drm",
+            "//private/google-modules/display/samsung:headers",
+            "//private/google-modules/display/samsung/panel:panel-samsung-drv",
+        ],
+        "//conditions:default": [],
+    }),
+)
+
+kernel_module_group(
+    name = "touch.common",
+    srcs = [
+        ":goog_touch_interface",
+        ":heatmap",
+        ":touch_bus_negotiator",
+        ":touch_offload",
+    ],
+    visibility = [
+        "//private/devices/google:__subpackages__",
+    ],
+)

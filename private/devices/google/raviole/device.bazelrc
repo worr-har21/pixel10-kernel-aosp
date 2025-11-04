@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# Copyright (C) 2023 Google LLC
+
+build:raviole --config=gs101_base
+build:raviole --//private/devices/google/common:kernel=//private/devices/google/raviole:raviole/kernel
+build:raviole --//private/google-modules/radio/samsung/s5300:cpif_with_dit
+build:raviole --//private/google-modules/touch/common:samsung_drm

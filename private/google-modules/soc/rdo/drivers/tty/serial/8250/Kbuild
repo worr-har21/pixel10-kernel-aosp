@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0-only
+obj-$(CONFIG_SERIAL_8250_DW_GOOGLE_QUIRKS)	+= google_8250_dw.o google_8250.o google_8250_base.o
+google_8250-y					:= google_8250_core.o
+google_8250_base-y				:= google_8250_port.o
+google_8250_base-y				+= google_8250_dma.o
+google_8250_base-y				+= google_8250_dwlib.o
+# This gives the drivers access to the logbuffer.h header
+subdir-ccflags-y += -I$(KERNEL_SRC)/../private/google-modules/bms

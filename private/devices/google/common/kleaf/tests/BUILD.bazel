@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+load(":merged_uapi_headers_test.bzl", "merged_uapi_headers_test")
+
+merged_uapi_headers_test(name = "merged_uapi_headers_test")
+
+test_suite(
+    name = "tests",
+)

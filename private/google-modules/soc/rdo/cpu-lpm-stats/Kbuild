@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+obj-$(CONFIG_GOOGLE_CPU_LPM_STATS) += google_cpu_lpm_stats.o

@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+ccflags-y += -DDYNAMIC_DEBUG_MODULE
+
+obj-$(CONFIG_GOOGLE_MBA_CTRL) += goog-mba-ctrl.o
+# Testing module
+obj-$(CONFIG_GOOGLE_MBA_CTRL_TEST) += goog-mba-ctrl-test.o

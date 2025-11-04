@@ -1,0 +1,79 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_module", "kernel_module_group")
+
+filegroup(
+    name = "fwtp.kconfig",
+    srcs = ["Kconfig"],
+    visibility = ["//private/devices/google:__subpackages__"],
+)
+
+ddk_module(
+    name = "fwtp_lib",
+    srcs = [
+        "fwtp.c",
+        "fwtp_ipc_client.c",
+        "fwtp_printer.c",
+    ],
+    out = "fwtp_lib.ko",
+    hdrs = [
+        "fwtp.h",
+        "fwtp_entry.h",
+        "fwtp_err.h",
+        "fwtp_ftrace.h",
+        "fwtp_if.h",
+        "fwtp_ipc_client.h",
+        "fwtp_platform.h",
+        "fwtp_printer.h",
+        "fwtp_protocol.h",
+        "tracepoint_ring.h",
+    ],
+    includes = ["."],
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = ["DYNAMIC_DEBUG_MODULE"],
+    visibility = ["//private/devices/google:__subpackages__"],
+    deps = [
+        "//common:all_headers_aarch64",
+        "//private/google-modules/soc/rdo:rdo_soc_headers",
+    ],
+)
+
+ddk_module(
+    name = "fwtp_cpm",
+    srcs = ["fwtp_cpm.c"],
+    out = "fwtp_cpm.ko",
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = ["DYNAMIC_DEBUG_MODULE"],
+    visibility = ["//private/devices/google:__subpackages__"],
+    deps = [
+        ":fwtp_lib",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/soc/rdo:rdo_soc_headers",
+        "//private/google-modules/soc/rdo:rdo_soc_module",
+    ],
+)
+
+ddk_module(
+    name = "fwtp_google_gdmc",
+    srcs = ["fwtp_google_gdmc.c"],
+    out = "fwtp_google_gdmc.ko",
+    kernel_build = "//private/devices/google/common:kernel",
+    local_defines = ["DYNAMIC_DEBUG_MODULE"],
+    visibility = ["//private/devices/google:__subpackages__"],
+    deps = [
+        ":fwtp_lib",
+        "//common:all_headers_aarch64",
+        "//private/google-modules/soc/rdo:rdo_soc_headers",
+        "//private/google-modules/soc/rdo:rdo_soc_module",
+    ],
+)
+
+kernel_module_group(
+    name = "fwtp_module_group",
+    srcs = [
+        ":fwtp_cpm",
+        ":fwtp_google_gdmc",
+        ":fwtp_lib",
+    ],
+    visibility = ["//private/devices/google:__subpackages__"],
+)
