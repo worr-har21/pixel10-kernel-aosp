@@ -1,0 +1,91 @@
+name: Build Android Kernel
+
+on:
+  workflow_dispatch:
+    inputs:
+      device:
+        description: "Select target kernel and its devices"
+        required: true
+        type: choice
+        options:
+          - muzel | Pixel 10 / 10 Pro / 10 Pro XL / 10 Pro Fold
+          - akita | Pixel 8a
+          - bluejay | Pixel 6a
+          - caimito | Pixel Fold 2
+          - comet | Pixel 9
+          - deepspace | Pixel 9 Pro
+          - felix | Pixel Fold
+          - gs101 | Generic GS101
+          - gs201 | Generic GS201
+          - lynx | Pixel 7a
+          - pantah | Pixel 7 / 7 Pro
+          - raviole | Pixel 6 / 6 Pro
+          - shusky | Pixel 8 / 8 Pro
+          - tangorpro | Pixel Tablet
+          - tegu | Pixel 9 Pro XL
+          - zuma | Pixel 8 / 8 Pro (GS201)
+          - zumapro | Pixel 9 / 9 Pro (GS305)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🧩 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🧱 Prepare environment
+        run: |
+          sudo apt update
+          sudo apt install -y git build-essential bc bison flex \
+            libssl-dev libncurses-dev ccache curl zip unzip
+
+      - name: 🔍 Extract codename and device name
+        id: deviceinfo
+        run: |
+          CODENAME=$(echo "${{ github.event.inputs.device }}" | cut -d'|' -f1 | xargs)
+          DEVICENAME=$(echo "${{ github.event.inputs.device }}" | cut -d'|' -f2 | xargs)
+          echo "codename=$CODENAME" >> $GITHUB_OUTPUT
+          echo "devicename=$DEVICENAME" >> $GITHUB_OUTPUT
+          echo "📱 Building kernel for: $DEVICENAME ($CODENAME)"
+
+      - name: ⚙️ Build kernel
+        run: |
+          chmod +x build_${{ steps.deviceinfo.outputs.codename }}.sh
+          ./build_${{ steps.deviceinfo.outputs.codename }}.sh
+
+      - name: 🧬 Detect kernel version
+        id: version
+        run: |
+          IMAGE_PATH=$(find out/${{ steps.deviceinfo.outputs.codename }}/dist -type f -name "Image" | head -n1)
+          if [[ -f "$IMAGE_PATH" ]]; then
+            VERSION=$(strings "$IMAGE_PATH" | grep "Linux version" | head -n1 | awk '{print $3}')
+          else
+            VERSION="unknown"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Detected kernel version: $VERSION"
+
+      - name: 📦 Package .img files into ZIP
+        run: |
+          cd out/${{ steps.deviceinfo.outputs.codename }}/dist
+          ZIP_NAME="kernel-${{ steps.deviceinfo.outputs.codename }}-${{ steps.version.outputs.version }}.zip"
+          zip -r "$ZIP_NAME" *.img
+          echo "zipname=$ZIP_NAME" >> $GITHUB_OUTPUT
+        id: zipfile
+
+      - name: 🚀 Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "${{ steps.deviceinfo.outputs.codename }}-${{ steps.version.outputs.version }}"
+          name: "Kernel ${{ steps.version.outputs.version }} for ${{ steps.deviceinfo.outputs.devicename }}"
+          body: |
+            🧬 **Kernel version:** `${{ steps.version.outputs.version }}`
+            📱 **Supported devices:** `${{ steps.deviceinfo.outputs.devicename }}`
+            🔖 **Codename:** `${{ steps.deviceinfo.outputs.codename }}`
+            ⚙️ **Commit:** `${{ github.sha }}`
+            🕒 Built on: `${{ github.run_date }}`
+          files: |
+            out/${{ steps.deviceinfo.outputs.codename }}/dist/*.img
+            out/${{ steps.deviceinfo.outputs.codename }}/dist/${{ steps.zipfile.outputs.zipname }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
