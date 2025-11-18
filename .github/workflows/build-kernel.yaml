@@ -1,10 +1,10 @@
-name: Build Android Kernel
+name: 🚀 Build Android Open Source Kernel
 
 on:
   workflow_dispatch:
     inputs:
       device:
-        description: "Select target kernel and its devices"
+        description: "📱 Select target kernel and its devices"
         required: true
         type: choice
         options:
@@ -26,6 +26,9 @@ on:
           - zuma | Pixel 8 / 8 Pro (GS201)
           - zumapro | Pixel 9 / 9 Pro (GS305)
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,8 +39,9 @@ jobs:
       - name: 🧱 Prepare environment
         run: |
           sudo apt update
-          sudo apt install -y git build-essential bc bison flex \
-            libssl-dev libncurses-dev ccache curl zip unzip
+          sudo apt install -y git gnupg flex bison build-essential libssl-dev \
+            libncurses-dev zip unzip curl zlib1g-dev libc6-dev-i386 x11proto-core-dev libx11-dev \
+            lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig repo 
 
       - name: 🔍 Extract codename and device name
         id: deviceinfo
@@ -48,10 +52,12 @@ jobs:
           echo "devicename=$DEVICENAME" >> $GITHUB_OUTPUT
           echo "📱 Building kernel for: $DEVICENAME ($CODENAME)"
 
-      - name: ⚙️ Build kernel
+      - name: ⚙️ Build Kernel
         run: |
-          chmod +x build_${{ steps.deviceinfo.outputs.codename }}.sh
-          ./build_${{ steps.deviceinfo.outputs.codename }}.sh
+          export JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+          export PATH=$JAVA_HOME/bin:$PATH
+          bash private/devices/google/${{ github.event.inputs.device }}/build_${{ github.event.inputs.device }}.sh --config=pixel_debug_common
+        shell: bash
 
       - name: 🧬 Detect kernel version
         id: version
@@ -65,15 +71,15 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Detected kernel version: $VERSION"
 
-      - name: 📦 Package .img files into ZIP
-        run: |
-          cd out/${{ steps.deviceinfo.outputs.codename }}/dist
-          ZIP_NAME="kernel-${{ steps.deviceinfo.outputs.codename }}-${{ steps.version.outputs.version }}.zip"
-          zip -r "$ZIP_NAME" *.img
-          echo "zipname=$ZIP_NAME" >> $GITHUB_OUTPUT
-        id: zipfile
+      #- name: 📦 Package .img files into ZIP
+      #  run: |
+      #    cd out/${{ steps.deviceinfo.outputs.codename }}/dist
+      #    ZIP_NAME="kernel-${{ steps.deviceinfo.outputs.codename }}-${{ steps.version.outputs.version }}.zip"
+      #    zip -r "$ZIP_NAME" *.img
+      #    echo "zipname=$ZIP_NAME" >> $GITHUB_OUTPUT
+      #  id: zipfile
 
-      - name: 🚀 Create GitHub Release
+      - name: 📦 Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "${{ steps.deviceinfo.outputs.codename }}-${{ steps.version.outputs.version }}"
@@ -86,6 +92,6 @@ jobs:
             🕒 Built on: `${{ github.run_date }}`
           files: |
             out/${{ steps.deviceinfo.outputs.codename }}/dist/*.img
-            out/${{ steps.deviceinfo.outputs.codename }}/dist/${{ steps.zipfile.outputs.zipname }}
+            #out/${{ steps.deviceinfo.outputs.codename }}/dist/${{ steps.zipfile.outputs.zipname }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
