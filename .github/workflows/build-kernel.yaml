@@ -8,23 +8,23 @@ on:
         required: true
         type: choice
         options:
-          - muzel | Pixel 10 / 10 Pro / 10 Pro XL / 10 Pro Fold
-          - akita | Pixel 8a
-          - bluejay | Pixel 6a
-          - caimito | Pixel Fold 2
-          - comet | Pixel 9
-          - deepspace | Pixel 9 Pro
-          - felix | Pixel Fold
-          - gs101 | Generic GS101
-          - gs201 | Generic GS201
-          - lynx | Pixel 7a
-          - pantah | Pixel 7 / 7 Pro
-          - raviole | Pixel 6 / 6 Pro
-          - shusky | Pixel 8 / 8 Pro
-          - tangorpro | Pixel Tablet
-          - tegu | Pixel 9 Pro XL
-          - zuma | Pixel 8 / 8 Pro (GS201)
-          - zumapro | Pixel 9 / 9 Pro (GS305)
+          - muzel
+          - akita
+          - bluejay
+          - caimito
+          - comet
+          - deepspace
+          - felix
+          - gs101
+          - gs201
+          - lynx
+          - pantah
+          - raviole
+          - shusky
+          - tangorpro
+          - tegu
+          - zuma
+          - zumapro
 
 permissions:
   contents: write
@@ -56,9 +56,8 @@ jobs:
         run: |
           export JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
           export PATH=$JAVA_HOME/bin:$PATH
-          ls -l private/devices/google/
           ls -l private/devices/google/${{ github.event.inputs.device }}/
-          # bash private/devices/google/${{ github.event.inputs.device }}/build_${{ github.event.inputs.device }}.sh --config=pixel_debug_common
+          bash private/devices/google/${{ github.event.inputs.device }}/build_${{ github.event.inputs.device }}.sh --config=pixel_debug_common
           exit 0
         shell: bash
 
