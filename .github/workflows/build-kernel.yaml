@@ -56,7 +56,10 @@ jobs:
         run: |
           export JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
           export PATH=$JAVA_HOME/bin:$PATH
-          bash private/devices/google/${{ github.event.inputs.device }}/build_${{ github.event.inputs.device }}.sh --config=pixel_debug_common
+          ls -l private/devices/google/
+          ls -l private/devices/google/${{ github.event.inputs.device }}/
+          # bash private/devices/google/${{ github.event.inputs.device }}/build_${{ github.event.inputs.device }}.sh --config=pixel_debug_common
+          exit 0
         shell: bash
 
       - name: 🧬 Detect kernel version
